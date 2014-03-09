@@ -1,5 +1,5 @@
 /*
- * assemble-contrib-navigation
+ * assemble-navigation
  * https://github.com/criticalmash/assemble-plugin-menuing.git
  *
  * Copyright (c) 2014 criticalmash

@@ -1,6 +1,6 @@
 /*
- * Assemble Plugin: assemble-contrib-navigation
- * https://github.com/criticalmash/assemble-contrib-navigation
+ * Assemble Plugin: assemble-navigation
+ * https://github.com/criticalmash/assemble-navigation
  * Assemble is the 100% JavaScript static site generator for Node.js, Grunt.js, and Yeoman.
  *
  * Copyright (c) 2014 criticalmash
@@ -22,15 +22,15 @@ var getJson = function(file) {
 };
 
 // the tests
-describe('assemble-contrib-navigation', function() {
+describe('assemble-navigation', function() {
 
   before(function(){
     // run any code before tests here
   });
 
   it('should do something awesome', function() {
-    var expected = 'assemble-contrib-navigation';
-    var actual = 'assemble-contrib-navigation';
+    var expected = 'assemble-navigation';
+    var actual = 'assemble-navigation';
     expect(actual).to.eql(expected);
   });
 

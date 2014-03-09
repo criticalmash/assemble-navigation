@@ -4,7 +4,7 @@
 [From the Assemble Website →](http://assemble.io)
 > Static site generator for Grunt.js, Yeoman and Node.js. Used by Zurb Foundation, Zurb Ink, H5BP/Effeckt, Less.js / lesscss.org, Topcoat, Web Experience Toolkit, and hundreds of other projects to build sites, themes, components, documentation, blogs and gh-pages.
 
-Assemble-contrib-navigation is a plugin to generate and inject heirarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
+Assemble-navigation is a plugin to generate and inject heirarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
 
 Working spec below
 
