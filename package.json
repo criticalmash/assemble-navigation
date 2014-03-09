@@ -1,0 +1,30 @@
+{
+  "name": "assemble-contrib-navigation",
+  "version": "0.1.0",
+  "description": "Create navigation data for use with Assemble",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt mochaTest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/criticalmash/assemble-contrib-navigation.git"
+  },
+  "keywords": [
+    "assemble",
+    "grunt",
+    "static",
+    "generator",
+    "navigation",
+    "menu",
+    "assembleplugin",
+    "assemble",
+    "plugin"
+  ],
+  "author": "John O'Donnell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/criticalmash/assemble-contrib-navigation/issues"
+  },
+  "homepage": "https://github.com/criticalmash/assemble-contrib-navigation"
+}
