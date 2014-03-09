@@ -6,12 +6,15 @@
   "newcap": true,
   "noarg": true,
   "sub": true,
-  "undef": false,
+  "undef": true,
+  "unused": false,
   "boss": true,
+  "eqnull": true,
+  "node": true,
   "globals": {
-    "module": true,
-    "exports": true,
-    "require": true
+    "describe": true,
+    "it": true,
+    "before": true
   }
 }
 

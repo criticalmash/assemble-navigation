@@ -1,8 +1,14 @@
-> Navigation generator plugin for Assemble
+#Navigation generator plugin for Assemble
+
+##What is Assemble?
+[From the Assemble Website →](http://assemble.io)
+> Static site generator for Grunt.js, Yeoman and Node.js. Used by Zurb Foundation, Zurb Ink, H5BP/Effeckt, Less.js / lesscss.org, Topcoat, Web Experience Toolkit, and hundreds of other projects to build sites, themes, components, documentation, blogs and gh-pages.
+
+Assemble-contrib-navigation is a plugin to generate and inject heirarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
 
 Working spec below
 
-#Here's what I'm thinking how such a plugin might work…
+##Here's what I'm thinking how such a plugin might work…
 
 The directory hierarchy of the site would be used to infer the navigation hierarchy. For example, if the site root has a directory named "products" then the main navigation might have a "Products" link with the directory's children listed below as links.
 
