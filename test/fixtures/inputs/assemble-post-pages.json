@@ -1,0 +1,271 @@
+{
+    "layoutdir": "",
+    "layout": [
+        "src/layouts/default.hbs"
+    ],
+    "layoutext": "",
+    "partials": [
+        "src/partials/**.hbs"
+    ],
+    "data": {
+        "peek": {},
+        "top-bar": {}
+    },
+    "assets": "../..",
+    "ext": ".html",
+    "plugins": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+    ],
+    "contextual": {
+        "dest": "tmp/"
+    },
+    "navigation": {
+        "main": {
+            "items": []
+        },
+        "footer": {
+            "sort": "byDate",
+            "items": []
+        },
+        "asside": {}
+    },
+    "originalAssets": "",
+    "originalLayout": [
+        "src/layouts/default.hbs"
+    ],
+    "collections": {
+        "tags": {
+            "name": "tags",
+            "inflection": "tag",
+            "sortorder": "ASC",
+            "sortby": "",
+            "items": []
+        },
+        "categories": {
+            "name": "categories",
+            "inflection": "category",
+            "sortorder": "ASC",
+            "sortby": "",
+            "items": []
+        },
+        "pages": {
+            "name": "pages",
+            "items": [
+                {
+                    "_page": "all",
+                    "pages": [
+                        {
+                            "_page": "all",
+                            "dirname": "public",
+                            "filename": "about.html",
+                            "pageName": "about.html",
+                            "pagename": "about.html",
+                            "basename": "about",
+                            "src": "src/pages/about.hbs",
+                            "dest": "public/about.html",
+                            "assets": "..",
+                            "ext": ".html",
+                            "extname": ".html",
+                            "page": "\n<h2>This is an about page.</h2>\n<ul > \n  \t{{#each  pages }} \n  \t\t<li><a href=\"{{{relativeLink}}}\" class=\"{{#if  isCurrentPage }}current{{/if  }}\">{{{data.title}}}</a></li>\n\t{{/each  }} \n</ul > \n<p>This is a paragraph.</p>",
+                            "data": {
+                                "title": "about this site"
+                            },
+                            "filePair": {
+                                "src": [
+                                    "src/pages/about.hbs"
+                                ],
+                                "dest": "public/about.hbs",
+                                "orig": {
+                                    "expand": true,
+                                    "cwd": "src/pages/",
+                                    "src": [
+                                        "**/*.hbs"
+                                    ],
+                                    "dest": "public/"
+                                }
+                            }
+                        },
+                        {
+                            "_page": "all",
+                            "dirname": "public",
+                            "filename": "index.html",
+                            "pageName": "index.html",
+                            "pagename": "index.html",
+                            "basename": "index",
+                            "src": "src/pages/index.hbs",
+                            "dest": "public/index.html",
+                            "assets": "..",
+                            "ext": ".html",
+                            "extname": ".html",
+                            "page": "\n\t<h1>My Project's Home Page</h1>\n\t<p>First paragraph</p>\n\t<p>2nd paragraph</p>\n\t<div class=\"intro\">\n\t\tThis is the intro.\n\t</div>\n\t<p>Third paragraph?</p>\n\t<p>forth paragraph</p>\n\t<p>Fith paragraph</p>\n\t<ul>\n\t\t<li>List item one.</li>\n\t\t<li>List item two.</li>\n\t\t<li>Third list item.</li>\n\t\t<li>4th item.</li>\n\t</ul>\n",
+                            "data": {
+                                "title": "Grunt Training test page"
+                            },
+                            "filePair": {
+                                "src": [
+                                    "src/pages/index.hbs"
+                                ],
+                                "dest": "public/index.hbs",
+                                "orig": {
+                                    "expand": true,
+                                    "cwd": "src/pages/",
+                                    "src": [
+                                        "**/*.hbs"
+                                    ],
+                                    "dest": "public/"
+                                }
+                            }
+                        },
+                        {
+                            "_page": "all",
+                            "dirname": "public/projects",
+                            "filename": "first.html",
+                            "pageName": "first.html",
+                            "pagename": "first.html",
+                            "basename": "first",
+                            "src": "src/pages/projects/first.hbs",
+                            "dest": "public/projects/first.html",
+                            "assets": "../..",
+                            "ext": ".html",
+                            "extname": ".html",
+                            "page": "\n<h2>This is the first project.</h2>\n<p>Info about first project.</p>\n<p>For more info...</p>\n<dl>\n\t<dt>Define terms</dt>\n\t<dd>And here's a definition.</dd>\n</dl>",
+                            "data": {
+                                "title": "Grunt Training projects page"
+                            },
+                            "filePair": {
+                                "src": [
+                                    "src/pages/projects/first.hbs"
+                                ],
+                                "dest": "public/projects/first.hbs",
+                                "orig": {
+                                    "expand": true,
+                                    "cwd": "src/pages/",
+                                    "src": [
+                                        "**/*.hbs"
+                                    ],
+                                    "dest": "public/"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "inflection": "_page",
+            "sortby": "name"
+        }
+    },
+    "_plugins": [
+        "assemble-contrib-contextual",
+        "assemble-contrib-sitemap",
+        "assemble-contrib-peek",
+        "node_modules/assemble/lib/plugins/**/*.js"
+    ],
+    "engine": "handlebars",
+    "defaultLayout": {
+        "layoutName": "default",
+        "layout": "<!DOCTYPE html> \n<html  lang =\"en\" > \n  <head > \n    <meta  charset =\"UTF-8\" > \n    <title > {{title }} - Haa!</title > \n    <link rel=\"stylesheet\" href=\"/css/app.css\">\n  </head > \n  <body > \n  \t{{> top-bar}}\n  \t<div class=\"content\">\n  \t\t{{ body }} \n  \t</div>\n  </body > \n</html > ",
+        "data": {}
+    },
+    "pages": [
+        {
+            "_page": "all",
+            "dirname": "public",
+            "filename": "about.html",
+            "pageName": "about.html",
+            "pagename": "about.html",
+            "basename": "about",
+            "src": "src/pages/about.hbs",
+            "dest": "public/about.html",
+            "assets": "..",
+            "ext": ".html",
+            "extname": ".html",
+            "page": "\n<h2>This is an about page.</h2>\n<ul > \n  \t{{#each  pages }} \n  \t\t<li><a href=\"{{{relativeLink}}}\" class=\"{{#if  isCurrentPage }}current{{/if  }}\">{{{data.title}}}</a></li>\n\t{{/each  }} \n</ul > \n<p>This is a paragraph.</p>",
+            "data": {
+                "title": "about this site"
+            },
+            "filePair": {
+                "src": [
+                    "src/pages/about.hbs"
+                ],
+                "dest": "public/about.hbs",
+                "orig": {
+                    "expand": true,
+                    "cwd": "src/pages/",
+                    "src": [
+                        "**/*.hbs"
+                    ],
+                    "dest": "public/"
+                }
+            }
+        },
+        {
+            "_page": "all",
+            "dirname": "public",
+            "filename": "index.html",
+            "pageName": "index.html",
+            "pagename": "index.html",
+            "basename": "index",
+            "src": "src/pages/index.hbs",
+            "dest": "public/index.html",
+            "assets": "..",
+            "ext": ".html",
+            "extname": ".html",
+            "page": "\n\t<h1>My Project's Home Page</h1>\n\t<p>First paragraph</p>\n\t<p>2nd paragraph</p>\n\t<div class=\"intro\">\n\t\tThis is the intro.\n\t</div>\n\t<p>Third paragraph?</p>\n\t<p>forth paragraph</p>\n\t<p>Fith paragraph</p>\n\t<ul>\n\t\t<li>List item one.</li>\n\t\t<li>List item two.</li>\n\t\t<li>Third list item.</li>\n\t\t<li>4th item.</li>\n\t</ul>\n",
+            "data": {
+                "title": "Grunt Training test page"
+            },
+            "filePair": {
+                "src": [
+                    "src/pages/index.hbs"
+                ],
+                "dest": "public/index.hbs",
+                "orig": {
+                    "expand": true,
+                    "cwd": "src/pages/",
+                    "src": [
+                        "**/*.hbs"
+                    ],
+                    "dest": "public/"
+                }
+            }
+        },
+        {
+            "_page": "all",
+            "dirname": "public/projects",
+            "filename": "first.html",
+            "pageName": "first.html",
+            "pagename": "first.html",
+            "basename": "first",
+            "src": "src/pages/projects/first.hbs",
+            "dest": "public/projects/first.html",
+            "assets": "../..",
+            "ext": ".html",
+            "extname": ".html",
+            "page": "\n<h2>This is the first project.</h2>\n<p>Info about first project.</p>\n<p>For more info...</p>\n<dl>\n\t<dt>Define terms</dt>\n\t<dd>And here's a definition.</dd>\n</dl>",
+            "data": {
+                "title": "Grunt Training projects page"
+            },
+            "filePair": {
+                "src": [
+                    "src/pages/projects/first.hbs"
+                ],
+                "dest": "public/projects/first.hbs",
+                "orig": {
+                    "expand": true,
+                    "cwd": "src/pages/",
+                    "src": [
+                        "**/*.hbs"
+                    ],
+                    "dest": "public/"
+                }
+            }
+        }
+    ],
+    "tags": [],
+    "categories": []
+}
