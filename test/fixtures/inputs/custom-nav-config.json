@@ -1,12 +1,7 @@
 {
-  "assemble": {
-    "options": {
-      "pages": [],
-      "navigation": {
-        "top":{},
-        "side": {},
-        "foot":{}
-      }
-    }
+  "navigation": {
+    "top":{},
+    "side": {},
+    "foot":{}
   }
 }
