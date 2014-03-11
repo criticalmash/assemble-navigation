@@ -10,7 +10,7 @@
  */
 
 
-var navigation = require('navigation');
+var navigation = require('./lib/navigation');
 
 
 
