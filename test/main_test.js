@@ -93,7 +93,15 @@ describe('assemble-navigation', function() {
     expect(about).to.have.ownProperty('url');
   });
 
+  it('Should be able to set alternative title for links', function() {
+    var input = getJson('inputs/assemble-post-pages.json');
+    // set link title
+    _(input.assemble.options.pages).find({basename:'index'}).data['menu-title'] = 'Home';
 
+    var actual = navigation.build(input);
+    var index = _(actual.main.items).find({linkId:'main-index'});
+    expect(index.title).to.eq('Home');
+  });
 
 
 });

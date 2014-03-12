@@ -21,3 +21,62 @@ The plugin would have sensible defaults that can be overridden in the task confi
 The data passed to each page's template would also be altered for each page to indicate the current page and it's parents.
 
 [More details](https://github.com/assemble/assemble/issues/462)
+
+##Instalation
+
+When ready will be available via npm
+
+Requires Assemble (and grunt)
+
+## How to use
+
+###Basic config using defaults
+
+Assemble-navigation is designed to work with almost-zero configuration. It infers the navigation heirarchy from the directory structure of the site. What you have to do is let Assemble know to use the plugin. That's done by adding the plugin to the Grunt config for Assemble.
+
+```javascript
+assemble: {
+    options: {
+        plugins: ['assemble-navigation']
+    }
+}
+```
+By default, the next time the Assemble task runs, the plugin will build your navigation object and add it to the context of each page it generates. Once in the context, you can use the data it supplies in any way you need. For example...
+
+```html
+<ul>
+{{#each navigation.main.items }} 
+    <li><a href="{{{url}}}" >{{{title}}}</a></li>
+{{/each  }} 
+</ul>
+```
+
+this will create a list of links for all the pages in your site (using the default config).
+
+Currently, the navigation data passed to templates is changing as the API is fleshed out. But right now, it looks somethign like this...
+
+```json
+{
+    "main": {
+        "items": [
+          {
+              "title": "About",
+              "url": "/about.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-about"
+          },
+          {
+              "title": "Home",
+              "url": "/index.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-index"
+          }
+        ]
+    }
+}
+
+```
+
+
