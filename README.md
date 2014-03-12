@@ -22,7 +22,7 @@ The data passed to each page's template would also be altered for each page to i
 
 [More details](https://github.com/assemble/assemble/issues/462)
 
-##Instalation
+##Installation
 
 When ready will be available via npm
 
@@ -53,7 +53,7 @@ By default, the next time the Assemble task runs, the plugin will build your nav
 
 this will create a list of links for all the pages in your site (using the default config).
 
-Currently, the navigation data passed to templates is changing as the API is fleshed out. But right now, it looks somethign like this...
+Currently, the navigation data passed to templates is changing as the API is fleshed out. But right now, it looks something like this...
 
 ```json
 {
@@ -67,7 +67,7 @@ Currently, the navigation data passed to templates is changing as the API is fle
               "linkId": "main-about"
           },
           {
-              "title": "Home",
+              "title": "Welcome to Our Home Page with a Very Long Name",
               "url": "/index.html",
               "isCurrentPage": false,
               "isActive": false,
@@ -76,7 +76,57 @@ Currently, the navigation data passed to templates is changing as the API is fle
         ]
     }
 }
-
 ```
+
+What you see above is the navgation object containing one menu, named *main*, that contains all the site's pages inside an array named items. This format can be easily altered by overridding the defaults in the Grunt config file.
+
+###Specifing Additional or Alternative Menus
+
+Having just one menu on our page is boring. Fortunatly we can add more via the Grunt config. Assemble navigation's configuration is changed by adding a *navigation* property to Assemble's options object.
+
+```javascript
+assemble: {
+    options: {
+        plugins: ['assemble-navigation'],
+        navigation: {
+            main: {default:true},
+            footer: {},
+            features: {}
+        }
+    }
+}
+```
+
+Above, we just added two menus to our navigation, **footer** and **features**. When overiding the defaults, if you want to keep the **main** menu, you must add it to your config. Also, the **main** object has it's **default** flag set to true, so that pages are assigned to it unless specified.
+
+Now, our customized navigation looks like this...
+
+```json
+{
+    "main": {
+        "items": [
+          {
+              "title": "About",
+              "url": "/about.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-about"
+          },
+          {
+              "title": "Welcome to Our Home Page with a Very Long Name",
+              "url": "/index.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-index"
+          }
+        ]
+    },
+    "footer": {
+        "items": []
+    },
+    "features": {
+        "items": []
+    }
+}
 
 
