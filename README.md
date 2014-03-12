@@ -32,6 +32,8 @@ Requires Assemble (and grunt)
 
 ###Basic configuration using defaults
 
+>These instructions assume that you have a basic understanding of [Grunt](http://gruntjs.com/getting-started) and [Assemble Website](http://assemble.io/docs/). Using this plug-in (and Assemble as well) will be vastly easier if you first understand [Dynamic Mappings](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), especially the *expand* and *cwd* options.
+
 Assemble-navigation is designed to work with almost-zero configuration. It infers the navigation heirarchy from the directory structure of the site. What you have to do is let Assemble know to use the plugin. That's done by adding the plug-in to the Grunt config for Assemble.
 
 ```javascript
