@@ -29,9 +29,10 @@ describe('assemble-navigation', function() {
     // run any code before tests here
   });
 
-  it('should do something awesome', function() {
-    var expected = 'assemble-navigation';
-    var actual = 'assemble-navigation';
+  it('navigation.build() should return a navigation object', function() {
+    var expected = {main:{items:[]}};
+    var input = getJson('scratch/sparse.json');
+    var actual = navigation.build(input);
     expect(actual).to.eql(expected);
   });
 
@@ -43,7 +44,7 @@ describe('assemble-navigation', function() {
   });
 
   it('custom-nav-config', function() {
-    var expected = getJson('expected/custom-nav-config.json');
+    //var expected = getJson('expected/custom-nav-config.json');
     var input = getJson('inputs/custom-nav-config.json');
     var actual = navigation.build(input);
     //expect(navigation.options).to.eql(expected.assemble.options);
@@ -62,7 +63,7 @@ describe('assemble-navigation', function() {
     var expected = getJson('expected/custom-nav-config.json');
     var input = getJson('inputs/assemble-post-pages.json');
     // make asside the default menu
-    input.navigation.asside.default = true;
+    input.assemble.options.navigation.asside.default = true;
     var actual = navigation.build(input);
     //expect(navigation.options).to.eql(expected.assemble.options);
     //expect(actual).to.include.key('main');
@@ -74,7 +75,7 @@ describe('assemble-navigation', function() {
     var expected = getJson('expected/custom-nav-config.json');
     var input = getJson('inputs/assemble-post-pages.json');
     // set menu option for about.hbs
-    _(input.pages).find({basename:'about'}).data['menu'] = 'footer';
+    _(input.assemble.options.pages).find({basename:'about'}).data['menu'] = 'footer';
 
     var actual = navigation.build(input);
     expect(actual.footer.items).to.have.length.above(0);
@@ -84,7 +85,7 @@ describe('assemble-navigation', function() {
     var expected = getJson('expected/custom-nav-config.json');
     var input = getJson('inputs/assemble-post-pages.json');
     // set menu option for about.hbs
-    _(input.pages).find({basename:'about'}).data['menu'] = ['main', 'footer'];
+    _(input.assemble.options.pages).find({basename:'about'}).data['menu'] = ['main', 'footer'];
 
     var actual = navigation.build(input);
     expect(actual.footer.items).to.have.length.above(0);
@@ -93,11 +94,6 @@ describe('assemble-navigation', function() {
   });
 
 
-  it('navigation.build() should return a navigation object', function() {
-    var expected = {main:{items:[]}};
-    var input = getJson('scratch/sparse.json');
-    var actual = navigation.build(input);
-    expect(actual).to.eql(expected);
-  });
+
 
 });

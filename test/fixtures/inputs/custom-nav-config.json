@@ -1,7 +1,11 @@
 {
-  "navigation": {
-    "top":{},
-    "side": {},
-    "foot":{}
+  "assemble": {
+    "options": {
+      "navigation": {
+        "top":{},
+        "side": {},
+        "foot":{}
+      }
+    }
   }
 }
