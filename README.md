@@ -171,3 +171,53 @@ title: Welcome to Our Home Page with a Very Long Title
 menu-title: Home
 ---
 ```
+
+At this point, our navigation object should look like this...
+
+
+```json
+{
+    "main": {
+        "items": [
+          {
+              "title": "Home",
+              "url": "/index.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-index"
+          },
+          {
+              "title": "New Products",
+              "url": "/newproducts.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-newproducts"
+          },
+        ]
+    },
+    "footer": {
+        "items": [
+            {
+                "title": "About",
+                "url": "/about.html",
+                "isCurrentPage": false,
+                "isActive": false,
+                "linkId": "main-about"
+            }
+        ]
+    },
+    "features": {
+        "items": [
+            {
+              "title": "New Products",
+              "url": "/newproducts.html",
+              "isCurrentPage": false,
+              "isActive": false,
+              "linkId": "main-newproducts"
+          }
+        ]
+    }
+}
+```
+
+About is relegated to the gutter of our page and New Products now appears twice.
