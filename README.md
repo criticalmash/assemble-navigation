@@ -28,11 +28,11 @@ When ready will be available via npm
 
 Requires Assemble (and grunt)
 
-## How to use
+## How To Use
 
-###Basic configuration using defaults
+###Basic Configuration Using Defaults
 
->These instructions assume that you have a basic understanding of [Grunt](http://gruntjs.com/getting-started) and [Assemble Website](http://assemble.io/docs/). Using this plug-in (and Assemble as well) will be vastly easier if you first understand [Dynamic Mappings](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), especially the *expand* and *cwd* options.
+>These instructions assume that you have a basic understanding of [Grunt](http://gruntjs.com/getting-started) and [Assemble](http://assemble.io/docs/). Using this plug-in (and Assemble as well) will be vastly easier if you first understand Grunt's [Dynamic Mappings](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), especially the *expand* and *cwd* options.
 
 Assemble-navigation is designed to work with almost-zero configuration. It infers the navigation heirarchy from the directory structure of the site. What you have to do is let Assemble know to use the plugin. That's done by adding the plug-in to the Grunt config for Assemble.
 
@@ -141,7 +141,7 @@ Now, our customized navigation looks like this...
 
 Now that we have two new menus (and an additional page), let's add some pages to the other menus and do something about that ridiculously long title.
 
-###Configuring page and link attributes
+###Configuring Page and Link Attributes
 
 Let's say we want to deemphasize the About page and make the New Products page a featured page. A links menu and settings can be changed by adding options to the YAML front matter of the corresponding page. Assemble Navigation already takes advantage of the commonly used custom variable *title* to set the link's title. (If *title* is not set, Navigation uses the page's basename, e.g. *index* for *index.html*.) 
 
