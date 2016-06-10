@@ -1,5 +1,7 @@
 #Navigation generator plugin for Assemble
 
+Note: This 0.2 branch is being updated for use with Assemble v0.11.0. I'll be updating the documentation as things settle.
+
 ##What is Assemble?
 [From the Assemble Website →](http://assemble.io)
 > Static site generator for Grunt.js, Yeoman and Node.js. Used by Zurb Foundation, Zurb Ink, H5BP/Effeckt, Less.js / lesscss.org, Topcoat, Web Experience Toolkit, and hundreds of other projects to build sites, themes, components, documentation, blogs and gh-pages.
