@@ -28,14 +28,17 @@
   },
   "homepage": "https://github.com/criticalmash/assemble-navigation",
   "devDependencies": {
+    "chai": "~1.9.0",
     "grunt": "~0.4.3",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-readme": "~0.4.5",
-    "grunt-mocha-test": "~0.9.4",
     "grunt-contrib-watch": "~0.5.3",
-    "chai": "~1.9.0"
+    "grunt-mocha-test": "~0.9.4",
+    "grunt-readme": "~0.4.5",
+    "rewrite-ext": "^0.2.0",
+    "vinyl": "^1.1.1"
   },
   "dependencies": {
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "mixin-deep": "^1.1.3"
   }
 }

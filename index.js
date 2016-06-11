@@ -14,31 +14,25 @@ var navigation = require('./lib/navigation');
 
 
 
+
 /**
-*   The plugin needs to react to two different events/stages
-*   'assemble:post:pages', is when we build the navigation
-*   'render:pre:page'  is when we alter nav to fit a given page
-*   we'll register to receive all stages and inspect the stage
-*   to see what we need to do
-*/
-var options = {
-  stage: '*:*:*'
-};
+ * Provides a function that takes an Assemble app object and a config object 
+ * adds two peices of middleware to the assemble app
+ *
+ * parsePages: attches to the onLoad route and parses each view that passes
+ * through it. That view is added to the navigation object
+ *
+ * inject: attaches to the preRender route and adds a customized navigation
+ * object to each view before rendering. It's up to the end user to create a
+ * layout or partial that can turn that data into a working menu
+ *
+ */
 
-var plugin = function(params, next) {
-  'use strict';
+// var navRouting = function(app, config){
+//   //navigation.configuration(config);
+//   app.pages.onLoad(/\.hbs$/, navigation.parsePages());
+//   app.pages.preRender(/\.hbs$/, navigation.inject());
+//   //this.sample = navigation.navigation;
+// };
 
-  if (params.stage === 'assemble:post:pages') {
-    // pages have been built, so let's scan them for menu items
-    navigation.build(params);
-  } else if (params.stage === 'render:pre:page') {
-    // a page needs navigation items
-    navigation.inject(params);
-  }
-  next();
-};
-
-
-// export options
-plugin.options = options;
-module.exports = plugin;
+module.exports = navigation;
