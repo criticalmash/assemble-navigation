@@ -15,6 +15,7 @@
     "describe": true,
     "it": true,
     "before": true
-  }
+  },
+  "esnext": true
 }
 
