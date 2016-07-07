@@ -93,19 +93,4 @@ describe('MenuItem', function () {
     });
   });
 
-  describe('getAssignedMenus', function () {
-    xit('should return false when menu is not set in frontmatter', function () {
-      var page = app.page('index.hbs', {path: 'media/news/latest-news.hbs', contents: new Buffer('a')});
-      var item = new MenuItem(page, 'main');
-      var menus = item.getAssignedMenus();
-      expect(menus).to.be.false;
-    });
-
-    it('should return an array when menu is set in frontmatter');
-
-    it('should return a default when called with one and no frontmatter');
-
-    it('should return menu as set in frontmatter and ignore the default');
-  });
-
 });
