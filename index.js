@@ -1,0 +1,137 @@
+'use strict';
+
+/**
+ * Assemble Navigation main function
+ */
+var Menu = require('./lib/menu');
+var MenuItem = require('./lib/menuitem');
+var _ = require('lodash');
+var merge = require('mixin-deep');
+
+/**
+ * create a Navigation instance
+ * ```js
+ * var navigation = new Navigation([config]);
+ * ```
+ * @param {object} config [optional config]
+ */
+function Navigation(config) {
+  if (!(this instanceof Navigation)) {
+    return new Navigation(config);
+  }
+  config = config || {};
+
+  // create properties
+  this.menus = {};
+
+  // set properties
+  this.setMenus(config.menus || ['main']);
+  this.default = config.default || 'main';
+}
+
+/**
+ * setMenus adds new menus to the menu list
+ * @param {array} menus [menu names]
+ */
+Navigation.prototype.setMenus = function (menus) {
+  for (var i = 0; i < menus.length; i++) {
+    var menu = menus[i];
+    this.menus[menu] = new Menu();
+  }
+};
+
+/**
+ * defaultMenu() get's or sets the default menu for the navigation scheme
+ * @param  {string} menu (optional) menu to set as default
+ * @return {string}      name of default menu
+ */
+Navigation.prototype.defaultMenu = function (menu) {
+  if (menu && this.menuExists(menu)) {
+    this.default = menu;
+  }
+  return this.default;
+};
+
+/**
+ * sees if a given menu name exists
+ * @param  {string} menu [menu name]
+ * @return {boolean}      [true if menu exists]
+ */
+Navigation.prototype.menuExists = function (menu) {
+  return _.has(this.menus, menu);
+};
+
+/**
+ * getAssignedMenus parses a view and returns any designated
+ * menus for the file or the default menu.
+ * Only returns existing menus
+ * @param  {object} view [Assemble view]
+ * @return {array}      [array of strings]
+ */
+Navigation.prototype.getAssignedMenus = function (view) {
+  var pageData = view.data;
+  var menus = _(pageData).has('menu') ? pageData.menu:this.default;
+  // is menu a sting? then turn it into an array
+  if (_.isString(menus)) {
+    menus = [menus];
+  }
+  // filter out non-existing menus
+  var self = this;
+  menus = _.filter(menus, function (m) {
+    return self.menuExists(m);
+  });
+
+  return menus;
+};
+
+/**
+ * examines an Assemble view object. THen creates
+ * a menuItem object for each menu it belongs in
+ * @param  {object} view [assemble view]
+ */
+Navigation.prototype.parseView = function (view) {
+  var menus = this.getAssignedMenus(view);
+  var self = this;
+  _(menus).forEach(function (name) {
+    var menuItem = new MenuItem(view);
+    self.menus[name].addItem(menuItem);
+  });
+};
+
+/**
+ * adds a localized copy of the navigation object to view
+ * @param  {object} view [assemble view]
+ */
+Navigation.prototype.inject = function (view) {
+  var navLocal = _.cloneDeep(this.menus);
+
+  // localize the menus
+  // create menuItem based on view
+  // set isActive to true
+  // add revised menuItem to relevant menus in navLocal
+
+  view.data = merge({}, {'navigation': navLocal}, view.data);
+};
+
+/**
+ * Onload middleware for Assemble
+ *
+ * @return {function} [a middleware function]
+ */
+Navigation.prototype.onLoad = function () {
+  return function (view, next) {
+
+    next();
+  };
+};
+
+
+Navigation.prototype.preRender = function () {
+  return function (view, next) {
+
+      next();
+    };
+};
+
+
+module.exports = Navigation;
