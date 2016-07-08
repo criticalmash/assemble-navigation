@@ -29,9 +29,9 @@ describe('MenuItem', function () {
   describe('test defaults', function () {
     it('should have minimum default values', function () {
       var page = app.page('index.hbs', {path: 'index.hbs', contents: new Buffer('a')});
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
 
-      console.log('menuItem', item);
+      //console.log('menuItem', item);
 
       expect(item.title).to.eql('index');
       expect(item.url).to.eql('/index.html');
@@ -48,7 +48,7 @@ describe('MenuItem', function () {
       var page = app.page('index.hbs', {path: 'index.hbs',
         contents: new Buffer('---\ntitle: mytitle\n--- a')
       });
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       expect(item.title).to.eql('mytitle');
     });
 
@@ -56,7 +56,7 @@ describe('MenuItem', function () {
       var page = app.page('index.hbs', {path: 'index.hbs',
         contents: new Buffer('---\ntitle: mytitle\nmenu-title: menutitle\n--- a')
       });
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       expect(item.title).to.eql('menutitle');
     });
 
@@ -65,13 +65,21 @@ describe('MenuItem', function () {
   describe('generateLinkID', function () {
     it('should always start with the menu id', function () {
       var page = app.page('index.hbs', {path: 'media/news/latest-news.hbs', contents: new Buffer('a')});
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       expect(item.linkId).to.eql('media-news-latest-news');
+    });
+
+    it('should accept a custom linkID in data attribute', function (){
+      var page = app.page('index.hbs', {path: 'index.hbs',
+        contents: new Buffer('---\nlinkId: my-custom-link-id\n--- a')
+      });
+      var item = new MenuItem(page);
+      expect(item.linkId).to.eql('my-custom-link-id');
     });
 
     xit('should account for CWD', function () {
       var page = app.page('media/news/latest-news.hbs', {cwd: '/media', path: 'media/news/latest-news.hbs', contents: new Buffer('a')});
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       expect(item.linkId).to.eql('media-news-latest-news');
     });
   });
@@ -79,7 +87,7 @@ describe('MenuItem', function () {
   describe('menu path array', function () {
     it('should generate a default menupath value from filepath', function () {
       var page = app.page('media/news/latest-news.hbs', {path: 'media/news/latest-news.hbs', contents: new Buffer('a')});
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       expect(item.menuPath).to.eql(['media', 'news', 'latest-news']);
     });
 
@@ -87,7 +95,7 @@ describe('MenuItem', function () {
       var page = app.page('index.hbs', {path: 'media/news/latest-news.hbs',
         contents: new Buffer('---\nmenu-path: news/latest \n---\na')
       });
-      var item = new MenuItem(page, 'main');
+      var item = new MenuItem(page);
       //console.log('item.data', item.data);
       expect(item.menuPath).to.eql(['news', 'latest-news']);
     });

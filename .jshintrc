@@ -14,7 +14,9 @@
   "globals": {
     "describe": true,
     "it": true,
-    "before": true
+    "xit": true,
+    "before": true,
+    "beforeEach": true,
   },
   "esnext": true
 }

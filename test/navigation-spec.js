@@ -195,20 +195,59 @@ describe('Navigation', function () {
       });
       navi.parseView(page);
       navi.inject(page);
-      console.log('navigation', page.data.navigation.main.items[0]);
-      expect(page.data.navigation.main.items[0].isActive).to.be.true;
+      // console.log('navigation', page.data.navigation.main.items[0]);
+      //console.log(JSON.stringify(page.data.navigation, null, '\t'));
+      expect(page.data.navigation.main.items[0].isCurrentPage).to.be.true;
     });
 
     it('should localize navigation data for complex structures');
 
-    it('should only localize copies of the original menus');
+    it('should only localize copies of the original menus', function () {
+      var page = app.page('index.hbs', {path: 'index.hbs',
+        contents: new Buffer('---\ntitle: home\nmenu-title: default menu home\n--- a')
+      });
+      navi.parseView(page);
+      navi.inject(page);
+      // console.log('navigation', page.data.navigation.main.items[0]);
+      //console.log(JSON.stringify(page.data.navigation, null, '\t'));
+      expect(navi.menus.main.items[0].isCurrentPage).to.be.false;
+    });
 
   });
 
   describe('custom links', function () {
-    it('should accept custom links');
+    var navi;
+    beforeEach(function () {
+      navi = new Navigation({'menus': ['main', 'footer']});
+      app = assemble();
+      if (!app.pages) {
+        app.create('pages');
+      }
+    });
 
-    it('should accept a custom link to another domain');
+    it('should accept custom links', function () {
+      var cmi = navi.customMenuItem({
+        title: 'Link to PDF',
+        url: '/downloads/pdf/salesbrochure.pdf',
+        menuPath: 'info/downloads/salesbrochure',
+        linkId: 'sales-brochure-link'
+      });
+      // console.log('customMenuItem', cmi);
+      console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      expect(navi.menus.main.items[0].title).to.equal('info');
+      expect(navi.menus.main.items[0].items[0].title).to.equal('downloads');
+      expect(navi.menus.main.items[0].items[0].items[0].title).to.equal('Link to PDF');
+      expect(navi.menus.main.items[0].items[0].items[0].url).to.equal('/downloads/pdf/salesbrochure.pdf');
+    });
+
+    it('should accept a custom link to another domain', function () {
+      var cmi = navi.customMenuItem({
+        title: 'Link Title',
+        url: 'http://google.com'
+      });
+      console.log('customMenuItem', cmi);
+      expect(navi.menus.main.items[0].url).to.equal('http://google.com');
+    });
   });
 
 });

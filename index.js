@@ -7,6 +7,7 @@ var Menu = require('./lib/menu');
 var MenuItem = require('./lib/menuitem');
 var _ = require('lodash');
 var merge = require('mixin-deep');
+var File = require('vinyl');
 
 /**
  * create a Navigation instance
@@ -84,6 +85,34 @@ Navigation.prototype.getAssignedMenus = function (view) {
   return menus;
 };
 
+Navigation.prototype.customMenuItem = function (config) {
+  // if(!_.isObject(config)){
+  //   throw 'customMenuItem needs config data';
+  // }
+  var stubView = new File({
+    cwd: this.cwd,
+    base: this.base,
+    path: config.url
+  });
+  stubView.data = {
+    title: config.title || 'NO TITLE',
+    menu: config.menu || this.default,
+    linkId: config.linkId
+  };
+  stubView.data = merge({}, config.data, stubView.data);
+  var menuItem = new MenuItem(stubView);
+  menuItem.url = config.url || '/';
+  menuItem.menuPath = config.menuPath ? config.menuPath.split('/') : ['.'];
+
+  var menus = this.getAssignedMenus(stubView);
+  var self = this;
+  _(menus).forEach(function (name) {
+    self.menus[name].addItem(menuItem);
+  });
+
+  return menuItem;
+}
+
 /**
  * examines an Assemble view object. THen creates
  * a menuItem object for each menu it belongs in
@@ -107,8 +136,15 @@ Navigation.prototype.inject = function (view) {
 
   // localize the menus
   // create menuItem based on view
-  // set isActive to true
+  // set isCurrentPage to true
   // add revised menuItem to relevant menus in navLocal
+  var menus = this.getAssignedMenus(view);
+  var self = this;
+  _(menus).forEach(function (name) {
+    var menuItem = new MenuItem(view);
+    menuItem.isCurrentPage = true
+    navLocal[name].addItem(menuItem);
+  });
 
   view.data = merge({}, {'navigation': navLocal}, view.data);
 };

@@ -65,6 +65,35 @@ navigation.createMenu('footer');
 ### .highlightPath(view, naviCopy)
 Localizes a copy of the main navigation object by flagging the active path to the page indicated in view.
 
+### .customMenuItem(config)
+Creates a custom menuItem without the use of a view. Could be used to link to a third-party site or to a file (PDF, etc.) that isn't a view.
+
+```js
+navigation.customMenuItem({
+	title: 'Our Friend`s Site',
+	url: 'http://example.com',
+	menuPath: 'about/friends',
+	menu: 'main',
+	data: {target: '_blank'}
+});
+
+navigation.customMenuItem({
+	title: 'Sales Brochure',
+	url: '/downloads/pdf/salesbrochure.pdf',
+	menuPath: 'info/downloads',
+	linkId: 'sales-brochure-link
+});
+```
+
+**Config Attributes:** 
+
+- `title` {string} The menu link text
+- `url` {string} link target
+- `menuPath` {string} Placement location in the menu hierarchy. Leave out if link belongs in top nav
+- `menu` {string} String or array indicating which menu(s) item appears in. Leave out to use default.
+- `data` {object} 
+
+
 # Sample usage
 
 **assemblefile.js**
