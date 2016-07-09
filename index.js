@@ -37,7 +37,8 @@ function Navigation(config) {
 Navigation.prototype.setMenus = function (menus) {
   for (var i = 0; i < menus.length; i++) {
     var menu = menus[i];
-    this.menus[menu] = new Menu();
+    var menuName = _.isString(menu) ? menu : menu.title;
+    this.menus[menuName] = new Menu(menu);
   }
 };
 

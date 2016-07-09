@@ -64,7 +64,17 @@ describe('Navigation', function () {
       expect(navi.defaultMenu()).to.equal('main');
     });
 
-    it('should accept custom menu ordering');
+    xit('should accept custom menu ordering', function () {
+      navi = new Navigation({'menus': [{
+        title: 'main', 
+        items: ['about', 'products']
+      }]});
+
+      console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      expect(navi.menus.main).to.be.an('object');
+      expect(navi.menus.main.items.length).to.equal(2);
+      expect(navi.menus.main.items[0].title).to.equal('About Us');
+    });
   });
 
   describe('menu exists', function () {
@@ -233,7 +243,7 @@ describe('Navigation', function () {
         linkId: 'sales-brochure-link'
       });
       // console.log('customMenuItem', cmi);
-      console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      //console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
       expect(navi.menus.main.items[0].title).to.equal('info');
       expect(navi.menus.main.items[0].items[0].title).to.equal('downloads');
       expect(navi.menus.main.items[0].items[0].items[0].title).to.equal('Link to PDF');
@@ -245,7 +255,7 @@ describe('Navigation', function () {
         title: 'Link Title',
         url: 'http://google.com'
       });
-      console.log('customMenuItem', cmi);
+     // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('http://google.com');
     });
   });

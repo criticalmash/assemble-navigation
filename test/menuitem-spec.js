@@ -41,6 +41,19 @@ describe('MenuItem', function () {
       expect(item.data).to.exist;
       expect(item.basename).to.eql('index', 'basename undefined');
     });
+
+    xit('should create a valid menuItem with just a linkId', function () {
+      var item = new MenuItem({linkId: 'about'});
+
+      console.log('menuItem from linkId', item);
+      expect(item.linkId).to.equal('about');
+      expect(item.title).to.eql('about');
+      expect(item.url).to.eql('#');
+      expect(item.isCurrentPage).to.be.false;
+      expect(item.isActive).to.be.false;
+      expect(item.data).to.exist;
+      expect(item.basename).to.eql('about', 'basename undefined');
+    });
   });
 
   describe('link titles', function () {

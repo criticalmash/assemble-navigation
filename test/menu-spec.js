@@ -243,4 +243,40 @@ describe('Menu', function () {
     });
   });
 
+  // describe('Menu configuration', function () {
+  //   beforeEach(function () {
+  //     // setup assemble
+  //     app = assemble();
+  //     if (!app.pages) {
+  //       app.create('pages');
+  //     }
+  //   });
+
+  //   it('should have configurable link ordering', function () {
+  //     // configure menu
+  //     menu = new Menu({
+  //       cwd: '/',
+  //       base: '/',
+  //       items: ['About Us', 'Products']
+  //     });
+
+  //     // insert menu items out of order
+  //     var productsPage = app.page('products.hbs', {path: 'products.hbs',
+  //       contents: new Buffer('')
+  //     });
+  //     var pMi = new MenuItem(productsPage);
+  //     menu.addItem(pMi);
+
+  //     var aboutPage = app.page('about.hbs', {path: 'about.hbs',
+  //       contents: new Buffer('')
+  //     });
+  //     var aMi = new MenuItem(aboutPage);
+  //     menu.addItem(aMi);
+
+  //     // test order
+  //     console.log(JSON.stringify(menu.items, null, '\t'));
+  //     expect(menu.items[0].title).to.equal('about');
+  //   });
+  // });
+
 });
