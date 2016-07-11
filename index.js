@@ -147,7 +147,25 @@ Navigation.prototype.inject = function (view) {
     navLocal[name].addItem(menuItem);
   });
 
-  view.data = merge({}, {'navigation': navLocal}, view.data);
+  view.data = merge({}, {'navigation': navLocal, 'mainmenu': [1,2,3]}, view.data);
+};
+
+Navigation.prototype.getLocalMenu = function (view) {
+  var navLocal = _.cloneDeep(this.menus);
+
+  // localize the menus
+  // create menuItem based on view
+  // set isCurrentPage to true
+  // add revised menuItem to relevant menus in navLocal
+  var menus = this.getAssignedMenus(view);
+  var self = this;
+  _(menus).forEach(function (name) {
+    var menuItem = new MenuItem(view);
+    menuItem.isCurrentPage = true
+    navLocal[name].addItem(menuItem);
+  });
+
+  return navLocal;
 };
 
 /**
@@ -156,18 +174,25 @@ Navigation.prototype.inject = function (view) {
  * @return {function} [a middleware function]
  */
 Navigation.prototype.onLoad = function () {
+  var self = this;
   return function (view, next) {
-
+    self.parseView(view);
     next();
   };
 };
 
 
 Navigation.prototype.preRender = function () {
+  var self = this;
   return function (view, next) {
-
-      next();
-    };
+    if (typeof next !== 'function') {
+      throw new TypeError('expected a callback function');
+    }
+    var navLocal = self.getLocalMenu(view);
+    view.data = merge({}, {'navigation': navLocal}, view.data);
+    //console.log('view.data', view.data);
+    next(null, view);
+  };
 };
 
 

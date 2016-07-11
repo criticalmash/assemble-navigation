@@ -30,7 +30,8 @@
   "homepage": "https://github.com/criticalmash/assemble-navigation",
   "devDependencies": {
     "assemble": "^0.15.0",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "through2": "^2.0.1"
   },
   "dependencies": {
     "lodash": "^4.13.1",
