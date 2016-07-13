@@ -1,10 +1,10 @@
 {
   "name": "assemble-navigation",
-  "version": "0.2.0",
-  "description": "Create navigation data for use with Assemble",
+  "version": "0.3.0",
+  "description": "Create navigation data for use with Assemble.js",
   "main": "index.js",
   "scripts": {
-    "test": "grunt mochaTest"
+    "test": "mocha test/*-spec.js"
   },
   "repository": {
     "type": "git",
@@ -12,30 +12,32 @@
   },
   "keywords": [
     "assemble",
-    "grunt",
     "static",
     "generator",
     "navigation",
     "menu",
-    "assembleplugin",
-    "assemble",
-    "plugin"
+    "assemble middleware"
   ],
-  "author": "John O'Donnell",
+  "author": {
+    "email": "john@criticalmash.com",
+    "name": "John O'Donnell",
+    "url": "http://criticalmash.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/criticalmash/assemble-navigation/issues"
   },
   "homepage": "https://github.com/criticalmash/assemble-navigation",
   "devDependencies": {
-    "grunt": "~0.4.3",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-readme": "~0.4.5",
-    "grunt-mocha-test": "~0.9.4",
-    "grunt-contrib-watch": "~0.5.3",
-    "chai": "~1.9.0"
+    "assemble": "^0.15.0",
+    "chai": "^3.5.0",
+    "through2": "^2.0.1"
   },
   "dependencies": {
-    "lodash": "~2.4.1"
+    "lodash": "^4.13.1",
+    "mixin-deep": "^1.1.3",
+    "rewrite-ext": "^0.2.0",
+    "underscore.string": "^3.3.4",
+    "vinyl": "^1.1.1"
   }
 }
