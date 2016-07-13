@@ -1,4 +1,4 @@
 ---
-title: products
+title: Products
 ---
 # Main products page

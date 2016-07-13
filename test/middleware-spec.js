@@ -34,17 +34,20 @@ describe('Middleware', function () {
       var page = app.pages.getView('index.hbs');
       app.render(page, function(err, res) {
         if (err) return cb(err);
-        console.log(res.context());
+        //console.log(res.context());
         expect(file.context().navigation).to.be.an('object');
         cb();
       });
+      //console.log(JSON.stringify(navi.menus.main, null, '\t'));
     });
 
-    xit('should add navigation to each page', function () {
+    it('should group siblings under same parent item', function () {
       app.pages('test/mocks/middleware/**/*.{md,hbs}');
-      app.toStream('pages')
-      .pipe(app.renderFile())
-      .pipe(streamReader());
+      // app.toStream('pages')
+      // .pipe(app.renderFile())
+      //.pipe(streamReader());
+      console.log(JSON.stringify(navi.menus, null, '\t'));
+      expect(navi.menus.main.items.length).to.equal(3);
     });
 
     var streamReader = function () {

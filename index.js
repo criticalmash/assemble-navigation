@@ -93,7 +93,7 @@ Navigation.prototype.customMenuItem = function (config) {
   var stubView = new File({
     cwd: this.cwd,
     base: this.base,
-    path: config.url
+    path: './'
   });
   stubView.data = {
     title: config.title || 'NO TITLE',

@@ -105,10 +105,14 @@ describe('Menu', function () {
       var page = app.page('media/news/releases/july-press-release.hbs');
       var mi = new MenuItem(page);
       menu.addItem(mi);
-      //console.log(JSON.stringify(menu.items[0], null, '\t'));
+      var page2 = app.page('media/news/releases/june-press-release.hbs');
+      var mi2 = new MenuItem(page2);
+      menu.addItem(mi2);
+      // console.log(JSON.stringify(menu.items[0], null, '\t'));
       expect(menu.items[0].title).to.equal('media');
       expect(menu.items[0].items[0].title).to.equal('news');
       expect(menu.items[0].items[0].items[0].title).to.equal('releases');
+      expect(menu.items[0].items[0].items[0].items.length).to.equal(2);
       expect(menu.items[0].items[0].items[0].items[0].title).to.equal('july-press-release');
     });
 
@@ -240,6 +244,32 @@ describe('Menu', function () {
       // examine menuItems
       //console.log(JSON.stringify(menu.items, null, '\t'));
       expect(menu.items[0].isCurrentPage, 'media.isCurrentPage').to.be.true;
+    });
+
+    it('should group siblings under same parent item', function () {
+      
+      var formerPage = app.page('artists/former.hbs', {path: 'artists/former.hbs',
+        contents: new Buffer('---\nmenu-title: The Artist Formerly Known \n---\na')
+      });
+      var fMi = new MenuItem(formerPage);
+      menu.addItem(fMi);
+
+      var dodgerPage = app.page('artists/dodger.hbs', {path: 'artists/dodger.hbs',
+        contents: new Buffer('---\nmenu-title: Artfull Dodger \n---\na')
+      });
+      var dMi = new MenuItem(dodgerPage);
+      menu.addItem(dMi);
+
+      var artistsPage = app.page('artists/index.hbs', {path: 'artists/index.hbs',
+        contents: new Buffer('---\nmenu-title: Artists \n---\na')
+      });
+      var aMi = new MenuItem(artistsPage);
+      menu.addItem(aMi);
+
+      //console.log(JSON.stringify(menu.items, null, '\t'));
+      expect(menu.items.length).to.equal(1);
+      expect(menu.items[0].items.length).to.equal(2);
+
     });
   });
 
