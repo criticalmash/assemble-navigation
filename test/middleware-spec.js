@@ -46,7 +46,7 @@ describe('Middleware', function () {
       // app.toStream('pages')
       // .pipe(app.renderFile())
       //.pipe(streamReader());
-      console.log(JSON.stringify(navi.menus.main, null, '\t'));
+      console.log(JSON.stringify(navi.menus, null, '\t'));
       expect(navi.menus.main.items.length).to.equal(3);
     });
 
