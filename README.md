@@ -14,7 +14,7 @@ Working spec below
 
 Every page object that passes through Assemble's build process contains meta data about it's location in the file hierarchy of the source directory, which can also be the hierarchy of the destination directory as well. Assemble-Navigation exploits this relationship between files to help automate your menu creation process.
 
-The directory hierarchy of the site is used to infer the navigation hierarchy. For example, if the site root has a directory named "products", we likely want the main navigation might have a "Products" link with the directory's children listed below as links in a dropdown.
+The directory hierarchy of the site is used to infer the navigation hierarchy. For example, if the site root has a directory named "products", we likely want the main navigation to have a "Products" link with the directory's children listed below as links in a dropdown.
 
 The middleware parses the page views as Assemble loads files and creates a hierarchal navigation object that is then added back into each page's data object before rendering. This navigation object contains all the information needed to render attractive menus.
 
