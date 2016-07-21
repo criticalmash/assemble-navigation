@@ -273,6 +273,25 @@ describe('Menu', function () {
     });
   });
 
+  describe('Clear Menu', function () {
+    var menu = new Menu({});
+
+    it('should exist', function () {
+      expect(menu.clearMenu).to.be.a('function');
+    });
+
+    it('should delete all menuItems when called', function () {
+      var page = app.page('index.hbs', {path: 'index.hbs', contents: new Buffer('a')});
+      var mi = new MenuItem(page);
+      menu.addItem(mi);
+      expect(menu.items.length).to.equal(1);
+      menu.clearMenu();
+      expect(menu.items.length).to.equal(0); 
+    });
+
+  });
+
+
   // describe('Menu configuration', function () {
   //   beforeEach(function () {
   //     // setup assemble

@@ -46,8 +46,15 @@ describe('Middleware', function () {
       // app.toStream('pages')
       // .pipe(app.renderFile())
       //.pipe(streamReader());
-      console.log(JSON.stringify(navi.menus, null, '\t'));
+      // console.log(JSON.stringify(navi.menus, null, '\t'));
       expect(navi.menus.main.items.length).to.equal(3);
+    });
+
+    it('should clear menu items', function () {
+      app.pages('test/mocks/middleware/**/*.{md,hbs}');
+      expect(navi.menus.main.items.length).to.equal(3);
+      navi.clearMenus();
+      expect(navi.menus.main.items.length).to.equal(0);
     });
 
     var streamReader = function () {

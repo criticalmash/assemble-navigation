@@ -1,14 +1,15 @@
 #Navigation generator plugin for Assemble
 
-> Note: This 0.3 branch is being updated for use with Assemble v0.11+. I'll be updating the documentation as things settle.
+> Note: This 0.3 branch is a public-beta designed to be used with Assemble v0.11+. Depending on feedback and testing, I might have to make breaking changes to the API.
+> Otherwise, feel free to use it and [share your thoughts](https://github.com/criticalmash/assemble-navigation/issues).
 
 ##What is Assemble?
-[From the Assemble Website →](http://assemble.io)
+[From the Assemble Repository →](https://github.com/assemble/assemble)
 > Get the rocks out of your socks! Assemble makes you fast at creating web projects. Assemble is used by thousands of projects for rapid prototyping, creating themes, scaffolds, boilerplates, e-books, UI components, API documentation, blogs, building websites / static site generator, alternative to jekyll for gh-pages and more! Assemble can also be used with gulp and grunt.
 
-Assemble-navigation is a middleware to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
+Assemble-navigation is a middleware collection to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
 
-Working spec below
+I've also created a collection of [navigation-helpers](https://github.com/criticalmash/navigation-helpers) to make building menus and breadcrumbs easier. But you can use any template helpers you like.
 
 ## How it works
 
@@ -59,6 +60,8 @@ app.pages.preRender(/\.hbs$|\.md$/, navigation.preRender());
 
 /* a sample task */
 app.task('content', function () {
+  /* clear out any old data (important during development) */
+  navigation.clearMenus();
   /* `src/content` would be designated as the cwd */
   app.pages('src/content/**/*.{md,hbs}');
   return app.toStream('pages')
@@ -461,6 +464,13 @@ Inside the base component markup, we see a handlebars `each` helper that loops o
 This example implements Foundation to create the navigation, but using using another front-end framework would be just as simple.
 
 > Note: this example doesn't include any means of sorting links. Future versions of Assemble-Navigation will include some means of specifying an order. Also the upcoming template helper package will contain some functionality to help sort menu items.
+ 
+### Sorting And Ordering Menu items
+Currently, the only ordering Navigation does is to make sure that index pages are at the front/top of any items array. In your templates, you can use helpers to sort items before looping over them. See [Navigation-Helpers](https://github.com/criticalmash/navigation-helpers) and [Handlebars-Helpers](https://github.com/assemble/handlebars-helpers) for some useful template helpers.
+
+Any value exposed by a MenuItem can be used for sorting or filtering, an especially useful method is to add a sorting field to the frontmatter of pages that you want to sort.
+
+The next version of Assemble-Navigation will have a means to order menu items inside the config object used when declaring a Navigation instance. See the [Issue Queue](https://github.com/criticalmash/assemble-navigation/issues) for this and other enhancements.
  
 ## Release History
 ### v0.3.0

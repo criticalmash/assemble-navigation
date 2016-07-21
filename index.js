@@ -169,6 +169,17 @@ Navigation.prototype.getLocalMenu = function (view) {
 };
 
 /**
+ * Loops through each menu and delete's it items. This
+ * prepares the menu for fresh data.
+ * @return {[type]} [description]
+ */
+Navigation.prototype.clearMenus = function () {
+  _.forEach(this.menus, function (menu) {
+    menu.clearMenu();
+  });
+};
+
+/**
  * Onload middleware for Assemble
  *
  * @return {function} [a middleware function]
@@ -194,6 +205,7 @@ Navigation.prototype.preRender = function () {
     next(null, view);
   };
 };
+
 
 
 module.exports = Navigation;

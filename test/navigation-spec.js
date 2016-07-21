@@ -260,4 +260,27 @@ describe('Navigation', function () {
     });
   });
 
+  describe('clear menus',  function (){
+    var navi;
+    beforeEach(function () {
+      navi = new Navigation({'menus': ['main', 'footer']});
+      app = assemble();
+      if (!app.pages) {
+        app.create('pages');
+      }
+    });
+    it('should exist', function () {
+      expect(navi.clearMenus).to.be.a('function');
+    });
+    it('should clear out menu items when told to', function () {
+      var cmi = navi.customMenuItem({
+        title: 'Link Title',
+        url: 'http://google.com'
+      });
+      expect(navi.menus.main.items.length).to.equal(1);
+      navi.clearMenus();
+      expect(navi.menus.main.items.length).to.equal(0, 'failed to clear menu');
+    });
+  });
+
 });
