@@ -1,6 +1,6 @@
 {
   "name": "assemble-navigation",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Create navigation data for use with Assemble.js",
   "main": "index.js",
   "scripts": {
