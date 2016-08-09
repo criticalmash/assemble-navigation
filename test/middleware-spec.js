@@ -32,9 +32,10 @@ describe('Middleware', function () {
       app.pages('test/mocks/middleware/**/*.{md,hbs}');
       
       var page = app.pages.getView('index.hbs');
+      // console.log('navi', JSON.stringify(navi.menus.main, null, '\t'));
       app.render(page, function(err, res) {
         if (err) return cb(err);
-        //console.log(res.context());
+        // console.log('context', res.context());
         expect(file.context().navigation).to.be.an('object');
         cb();
       });
@@ -55,6 +56,13 @@ describe('Middleware', function () {
       expect(navi.menus.main.items.length).to.equal(3);
       navi.clearMenus();
       expect(navi.menus.main.items.length).to.equal(0);
+    });
+
+    it('should use menuItem config', function () {
+      app.pages('test/mocks/options/**/*.{md,hbs}');
+      // console.log(JSON.stringify(navi.menus, null, '\t'));
+      expect(navi.menus.main.items[0].title).to.equal('Options');
+      expect(navi.menus.footer.items[0].title).to.equal('Mine');
     });
 
     var streamReader = function () {

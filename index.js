@@ -71,20 +71,55 @@ Navigation.prototype.menuExists = function (menu) {
  * @return {array}      [array of strings]
  */
 Navigation.prototype.getAssignedMenus = function (view) {
+  var self = this;
   var pageData = view.data;
   var menus = _(pageData).has('menu') ? pageData.menu:this.default;
+
   // is menu a sting? then turn it into an array
   if (_.isString(menus)) {
     menus = [menus];
   }
+
+  // normalize menu options
+  menus = _.map(menus, function (menu) {
+    return self.createMenuOption(menu);
+  });
+
   // filter out non-existing menus
-  var self = this;
   menus = _.filter(menus, function (m) {
-    return self.menuExists(m);
+    return self.menuExists(m['menu-name']);
   });
 
   return menus;
 };
+
+Navigation.prototype.createMenuOption = function (menu) {
+  var options = {};
+  if (_.isString(menu)) {
+    options['menu-name'] = menu;
+  }else{
+    options = menu;
+  }
+  return options;
+};
+
+// Navigation.prototype.OLDgetAssignedMenus = function (view) {
+//   var pageData = view.data;
+//   var menus = _(pageData).has('menu') ? pageData.menu:this.default;
+//   // is menu a sting? then turn it into an array
+//   if (_.isString(menus)) {
+//     menus = [menus];
+//   }
+//   // filter out non-existing menus
+//   var self = this;
+//   menus = _.filter(menus, function (m) {
+//     return self.menuExists(m);
+//   });
+
+//   return menus;
+// };
+
+
 
 Navigation.prototype.customMenuItem = function (config) {
   // if(!_.isObject(config)){
@@ -107,7 +142,8 @@ Navigation.prototype.customMenuItem = function (config) {
 
   var menus = this.getAssignedMenus(stubView);
   var self = this;
-  _(menus).forEach(function (name) {
+  _(menus).forEach(function (menu) {
+    var name = menu['menu-name'];
     self.menus[name].addItem(menuItem);
   });
 
@@ -122,8 +158,10 @@ Navigation.prototype.customMenuItem = function (config) {
 Navigation.prototype.parseView = function (view) {
   var menus = this.getAssignedMenus(view);
   var self = this;
-  _(menus).forEach(function (name) {
-    var menuItem = new MenuItem(view);
+  //console.log('parseView menus', menus);
+  _(menus).forEach(function (options) {
+    var name = options['menu-name'];
+    var menuItem = new MenuItem(view, options);
     self.menus[name].addItem(menuItem);
   });
 };
@@ -141,13 +179,14 @@ Navigation.prototype.inject = function (view) {
   // add revised menuItem to relevant menus in navLocal
   var menus = this.getAssignedMenus(view);
   var self = this;
-  _(menus).forEach(function (name) {
+  _(menus).forEach(function (menu) {
+    var name = menu['menu-name'];
     var menuItem = new MenuItem(view);
     menuItem.isCurrentPage = true
     navLocal[name].addItem(menuItem);
   });
 
-  view.data = merge({}, {'navigation': navLocal, 'mainmenu': [1,2,3]}, view.data);
+  view.data = merge({}, {'navigation': navLocal}, view.data);
 };
 
 Navigation.prototype.getLocalMenu = function (view) {
@@ -159,7 +198,8 @@ Navigation.prototype.getLocalMenu = function (view) {
   // add revised menuItem to relevant menus in navLocal
   var menus = this.getAssignedMenus(view);
   var self = this;
-  _(menus).forEach(function (name) {
+  _(menus).forEach(function (menu) {
+    var name = menu['menu-name'];
     var menuItem = new MenuItem(view);
     menuItem.isCurrentPage = true
     navLocal[name].addItem(menuItem);
@@ -201,7 +241,7 @@ Navigation.prototype.preRender = function () {
     }
     var navLocal = self.getLocalMenu(view);
     view.data = merge({}, {'navigation': navLocal}, view.data);
-    //console.log('view.data', view.data);
+    // console.log('view.data', view.data);
     next(null, view);
   };
 };

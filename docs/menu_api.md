@@ -52,3 +52,17 @@ var menuData = menu.toJSON();
 
 ### copyMenu()
 Returns a deep copy of the menu that's injected into a page's data attribute
+
+
+## Sorting Menu Items
+Goals
+
+* Provide sensible defaults
+    * `index` first
+    * Then alphabetically by title
+* Make them easy to change
+    * menuIndex variable inside front matter
+    * Menu ordering via `Navigation` config object
+    * Sorting via helpers like `CollectionQuery`
+* Have them sort in a predictable and repeatable way
+

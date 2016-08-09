@@ -9,6 +9,7 @@ var assemble = require('assemble');
 var app;
 
 var MenuItem = require('../lib/menuitem.js');
+var Navigation = require('../');
 
 describe('MenuItem', function () {
   beforeEach(function () {
@@ -110,7 +111,61 @@ describe('MenuItem', function () {
       });
       var item = new MenuItem(page);
       //console.log('item.data', item.data);
-      expect(item.menuPath).to.eql(['news', 'latest-news']);
+      expect(item.menuPath).to.eql(['news', 'latest']);
+    });
+  });
+
+  describe('options parameter', function () {
+    var navi;
+    beforeEach(function () {
+      navi = new Navigation({'menus': ['main', 'footer']});
+    });
+
+    it('menu items should be set', function (){
+      expect(navi.menuExists('footer')).equals(true);
+    });
+
+    it('should accept an optional `options` parameter and use it to alter menuItem', function () {
+      var page = app.page('test/mocks/options/about.hbs');
+      var menus = navi.getAssignedMenus(page);
+      // console.log('getAssignedMenus', menus);
+
+      var mainItem = new MenuItem(page, menus[0]);
+      expect(mainItem.title).to.equal('Options');
+
+      var footerItem = new MenuItem(page, menus[1]);
+      expect(footerItem.title).to.equal('Mine');
+    });
+
+    it('should ovewrite menuPath', function () {
+      var page = app.page('test/mocks/options/about.hbs');
+      var menus = navi.getAssignedMenus(page);
+      
+      var mainItem = new MenuItem(page, menus[0]);
+      // console.log('mainItem', mainItem);
+      expect(mainItem.menuPath[3]).to.equal('about');
+
+      var footerItem = new MenuItem(page, menus[1]);
+      //console.log('footerItem', footerItem);
+      expect(footerItem.menuPath[0]).to.equal('mypage');
+      
+    });
+    
+  });
+
+  describe('index variable', function () {
+    var navi;
+    beforeEach(function () {
+      navi = new Navigation({'menus': ['main', 'footer']});
+    });
+
+    it('should exist', function () {
+      var page = app.page('test/mocks/options/about.hbs');
+      var menus = navi.getAssignedMenus(page);
+      
+      var mainItem = new MenuItem(page, menus[0]);
+      expect(mainItem.menuIndex).to.equal(-1);
+
     });
   });
 

@@ -94,6 +94,14 @@ describe('Navigation', function () {
       app.create('pages');
     }
 
+    it('should return an array of `options` hashes ', function (){
+      var page = app.page('test/mocks/options/about.hbs');
+      // console.log('about', page.data);
+      var menus = navi.getAssignedMenus(page);
+      console.log('getAssignedMenus', menus);
+      expect(menus[0]).to.be.an('object');
+    });
+
     it('should return main when no menu`s are set in frontmatter', function () {
       var page = app.page('index.hbs', {path: 'index.hbs',
         contents: new Buffer('---\ntitle: mytitle\nmenu-title: menutitle\n--- a')
@@ -101,7 +109,7 @@ describe('Navigation', function () {
       var menus = navi.getAssignedMenus(page);
       expect(menus).to.be.an('array');
       expect(menus.length).to.equal(1);
-      expect(menus[0]).to.equal('main');
+      expect(menus[0]['menu-name']).to.equal('main');
     });
 
     it('should return custom menu when set in frontmatter', function () {
@@ -110,7 +118,7 @@ describe('Navigation', function () {
       });
       var menus = navi.getAssignedMenus(page);
       expect(menus.length).to.equal(1);
-      expect(menus[0]).to.equal('footer');
+      expect(menus[0]['menu-name']).to.equal('footer');
     });
 
     it('should return multiple menus when set in frontmatter', function () {
@@ -119,8 +127,8 @@ describe('Navigation', function () {
       });
       var menus = navi.getAssignedMenus(page);
       expect(menus.length).to.equal(2);
-      expect(menus[0]).to.equal('main');
-      expect(menus[1]).to.equal('footer');
+      expect(menus[0]['menu-name']).to.equal('main');
+      expect(menus[1]['menu-name']).to.equal('footer');
     });
 
     it('should only return menus that exist in menu list', function () {
@@ -129,7 +137,7 @@ describe('Navigation', function () {
       });
       var menus = navi.getAssignedMenus(page);
       expect(menus.length).to.equal(1);
-      expect(menus[0]).to.equal('main');
+      expect(menus[0]['menu-name']).to.equal('main');
     });
   });
 
