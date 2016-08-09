@@ -91,6 +91,12 @@ describe('MenuItem', function () {
       expect(item.linkId).to.eql('my-custom-link-id');
     });
 
+    it('should work with real files', function () {
+      var page = app.page('media/news/releases/july-press-release.hbs');
+      var item = new MenuItem(page);
+      expect(item.linkId).to.eql('media-news-releases-july-press-release');
+    });
+
     xit('should account for CWD', function () {
       var page = app.page('media/news/latest-news.hbs', {cwd: '/media', path: 'media/news/latest-news.hbs', contents: new Buffer('a')});
       var item = new MenuItem(page);

@@ -32,7 +32,7 @@ function Navigation(config) {
 
 /**
  * setMenus adds new menus to the menu list
- * @param {array} menus [menu names]
+ * @param {Array} menus [menu names]
  */
 Navigation.prototype.setMenus = function (menus) {
   for (var i = 0; i < menus.length; i++) {
@@ -93,6 +93,13 @@ Navigation.prototype.getAssignedMenus = function (view) {
   return menus;
 };
 
+/**
+ * Enables views to have per/menu settings
+ * If menu is just a string, it will wrap it in an object
+ * otherwise it just passes back an object
+ * @param  {String|Object} menu settings
+ * @return {Object}      Menu settings object
+ */
 Navigation.prototype.createMenuOption = function (menu) {
   var options = {};
   if (_.isString(menu)) {
@@ -103,44 +110,31 @@ Navigation.prototype.createMenuOption = function (menu) {
   return options;
 };
 
-// Navigation.prototype.OLDgetAssignedMenus = function (view) {
-//   var pageData = view.data;
-//   var menus = _(pageData).has('menu') ? pageData.menu:this.default;
-//   // is menu a sting? then turn it into an array
-//   if (_.isString(menus)) {
-//     menus = [menus];
-//   }
-//   // filter out non-existing menus
-//   var self = this;
-//   menus = _.filter(menus, function (m) {
-//     return self.menuExists(m);
-//   });
 
-//   return menus;
-// };
-
-
-
+/**
+ * Creates a custom menu item from the config object passed to it. Used to create menutItems
+ * for pages that are not Assemble views, like outside links and links to PDFs or other downloadables.
+ * 
+ * Object should at least have a url attribute and preferably a title. But it can use any attribute 
+ * any of the valid frontmatter values.
+ *
+ * ```js
+ * nav.customMenuItem({
+ *   title: 'Click Me',
+ *   url: 'http://sample.com',
+ *   menu: 'footer'
+ * });
+ * ```
+ * Menu item is added to menu(s)
+ * 
+ * @param  {Object} config hash
+ * @return {[type]}        [description]
+ */
 Navigation.prototype.customMenuItem = function (config) {
-  // if(!_.isObject(config)){
-  //   throw 'customMenuItem needs config data';
-  // }
-  var stubView = new File({
-    cwd: this.cwd,
-    base: this.base,
-    path: './'
-  });
-  stubView.data = {
-    title: config.title || 'NO TITLE',
-    menu: config.menu || this.default,
-    linkId: config.linkId
-  };
-  stubView.data = merge({}, config.data, stubView.data);
-  var menuItem = new MenuItem(stubView);
-  menuItem.url = config.url || '/';
-  menuItem.menuPath = config.menuPath ? config.menuPath.split('/') : ['.'];
-
-  var menus = this.getAssignedMenus(stubView);
+  
+  var menuItem = new MenuItem(config);
+  
+  var menus = this.getAssignedMenus(menuItem);
   var self = this;
   _(menus).forEach(function (menu) {
     var name = menu['menu-name'];

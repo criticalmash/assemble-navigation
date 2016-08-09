@@ -98,7 +98,7 @@ describe('Navigation', function () {
       var page = app.page('test/mocks/options/about.hbs');
       // console.log('about', page.data);
       var menus = navi.getAssignedMenus(page);
-      console.log('getAssignedMenus', menus);
+      //console.log('getAssignedMenus', menus);
       expect(menus[0]).to.be.an('object');
     });
 
@@ -247,11 +247,11 @@ describe('Navigation', function () {
       var cmi = navi.customMenuItem({
         title: 'Link to PDF',
         url: '/downloads/pdf/salesbrochure.pdf',
-        menuPath: 'info/downloads/salesbrochure',
+        data: {'menu-path': 'info/downloads/salesbrochure'},
         linkId: 'sales-brochure-link'
       });
       // console.log('customMenuItem', cmi);
-      //console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      // console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
       expect(navi.menus.main.items[0].title).to.equal('info');
       expect(navi.menus.main.items[0].items[0].title).to.equal('downloads');
       expect(navi.menus.main.items[0].items[0].items[0].title).to.equal('Link to PDF');
