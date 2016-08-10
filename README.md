@@ -466,13 +466,49 @@ This example implements Foundation to create the navigation, but using using ano
 > Note: this example doesn't include any means of sorting links. Future versions of Assemble-Navigation will include some means of specifying an order. Also the upcoming template helper package will contain some functionality to help sort menu items.
  
 ### Sorting And Ordering Menu items
-Currently, the only ordering Navigation does is to make sure that index pages are at the front/top of any items array. In your templates, you can use helpers to sort items before looping over them. See [Navigation-Helpers](https://github.com/criticalmash/navigation-helpers) and [Handlebars-Helpers](https://github.com/assemble/handlebars-helpers) for some useful template helpers.
+By default, the only ordering Navigation does is to make sure that index pages are at the front/top of any items array. The rest of the items appear in the order they arrive, which is usually alphabetical. There are two ways you can define the ordering of your menus...
 
-Any value exposed by a MenuItem can be used for sorting or filtering, an especially useful method is to add a sorting field to the frontmatter of pages that you want to sort.
+* In the templates you can sort menu items before rendering
+* In your AssembleFile using a sorting function
+
+Both of these methods use the attributes in your menu items.
+
+#### Sorting inside templates
+ In your templates, you can use helpers to sort items before looping over them. See [Navigation-Helpers](https://github.com/criticalmash/navigation-helpers) and [Handlebars-Helpers](https://github.com/assemble/handlebars-helpers) for some useful template helpers.
+
+Any value exposed by a MenuItem can be used for sorting or filtering, an especially useful method is to add a sorting field to the front matter of pages that you want to sort.
 
 The next version of Assemble-Navigation will have a means to order menu items inside the config object used when declaring a Navigation instance. See the [Issue Queue](https://github.com/criticalmash/assemble-navigation/issues) for this and other enhancements.
+
+#### Creating a sorting function
+A sorting function is passed to a menu after all views are loaded and before rendering. It's similar to using JavaScripts [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) function but with two significant differences:
+
+* The function is applied to the menu and any submenus recursively.
+* A reference to the parent item of the two siblings being compared is also passed into the function.
+
+Here's an example of a simple sort function that orders menu items by title. 
+
+```js
+// Your sorting function
+function sortByTitle (menuItem_a, menuItem_b, parent) {
+  if(menuItem_a.title > menuItem_b.title){
+    return 1;
+  }
+  if(menuItem_a.title < menuItem_b.title){
+    return -1;
+  }
+  return 0;
+}
+// sort the main menu
+navigation.menus.main.sort(sortByTitleOrSpecial);
+``` 
+The `parent` parameter is useful when you want to use different sorting strategies for different menus. For example, you can use an Alpha-by-Title sort for your products page and sort blog posts using a timestamp value in the post's front matter. See the tests file [sort-spect.js] for examples.
+
  
 ## Release History
+### v0.4.0
+Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation.
+
 ### v0.3.0
 Beta release
 
