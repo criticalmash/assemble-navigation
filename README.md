@@ -60,8 +60,11 @@ var Navigation = require('assemble-navigation');
 
 var app = assemble();
 
+/* create an instance of navigation, you can pass in an 
+optional object hash with config parameters */
 var navigation = new Navigation();
 
+/* Attach middleware to onLoad and preRender events */
 app.pages.onLoad(/\.hbs$|\.md$/, navigation.onLoad());
 app.pages.preRender(/\.hbs$|\.md$/, navigation.preRender());
 
@@ -79,7 +82,7 @@ app.task('content', function () {
 });
 
 ```
-By default, the next time the Assemble loads view onto the `page` collection, the `onLoad` middleware will build your navigation object. When Assemble prepares to render the pages, the `preRender` middleware creates a copy of the navigation object adds it to the data attribute of each page it generates. Once in the view, you can use the data it supplies in any way you need. For example...
+By default, the next time the Assemble loads a view onto the `page` collection, the `onLoad` middleware will build your navigation object. When Assemble prepares to render the pages, the `preRender` middleware creates a copy of the navigation object and adds it to the data attribute of each page it generates. Once in the view, you can use the data it supplies in any way you need. For example...
 
 ```html
 <ul>
@@ -275,7 +278,7 @@ navigation.customMenuItem({
 	title: 'Sales Brochure',
 	url: '/downloads/pdf/salesbrochure.pdf',
 	menuPath: 'info/downloads',
-	linkId: 'sales-brochure-link
+	linkId: 'sales-brochure-link'
 });
 ```
 
