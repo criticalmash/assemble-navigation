@@ -357,7 +357,7 @@ When designating the additional menus, instead of passing in a string of with th
 var navigation = new Navigation({'menus': [
   'header', 
   {'menu-name': 'footer', 'type': 'flat'}
-  ]);
+]);
 ```
 
 
