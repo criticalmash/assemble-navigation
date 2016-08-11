@@ -24,7 +24,7 @@ The middleware parses the page views as Assemble loads files and creates a hiera
 
 The site builder can then create templates that use these objects to build menu's of their choosing.
 
-Assemble navigation uses sensible defaults that can be overridden in the `Assemblefile.js` file, front-matter, etc. By default, the Assebmle-Navigation creates one menu called `main` and place all pages into it. The site builder can override this default by adding a new menu called `footer`, and then update the front-matter of some pages to indicate that the page belongs in `footer` instead of `main`. Similar methods can be used to specify a custom sort order, use an alternative title in the menu, etc.
+Assemble-Navigation uses sensible defaults that can be overridden in the `Assemblefile.js` file, front-matter, etc. By default, the Assebmle-Navigation creates one menu called `main` and place all pages into it. The site builder can override this default by adding a new menu called `footer`, and then update the front-matter of some pages to indicate that the page belongs in `footer` instead of `main`. Similar methods can be used to specify a custom sort order, use an alternative title in the menu, etc.
 
 The data passed to each page's template is altered for each page to indicate the current page and it's parents.
 
@@ -40,7 +40,11 @@ npm i assemble-navigation --save
 
 Requires Assemble 0.11 or later.
 
-> Note: a set of template helpers are in development to make some tasks easier. A demo site with source code is also in the works. Keep an eye on this space for updates.
+You might also want to install the [navigation-helpers](https://github.com/criticalmash/navigation-helpers).
+
+```
+npm i navigation-helpers --save
+```
 
 ## How To Use
 
@@ -48,7 +52,7 @@ Requires Assemble 0.11 or later.
 
 >These instructions assume that you have a basic understanding of *Gulp style* [Assemble](https://github.com/assemble/assemble). Using this package will be vastly easier if you first understand how to build a basic Assemble site.
 
-Assemble-navigation is designed to work with almost-zero configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
+Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
 
 ```javascript
 var assemble = require('assemble');
