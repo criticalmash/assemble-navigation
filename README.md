@@ -282,7 +282,7 @@ navigation.customMenuItem({
 
 You'll most likely would want to call `customMenuItem` config from within a task.
 
-###Specifying Additional or Alternative Menus
+### Specifying Additional or Alternative Menus
 
 Having just one menu on our page is boring. Fortunately, we can add more when creating an instance of the `Navigation` object. Assemble Navigation's configuration is changed by passing a config object when creating an instance of the `Navigation` object.
 
@@ -334,6 +334,19 @@ Now, our customized navigation looks like this...
 ```
 
 Now that we have two new menus (and an additional page), let's add some pages to the other menus and do something about that ridiculously long title.
+
+#### Flat Menus
+Some extra menus, like the footer menu, usually contain only a few items and don't require a hierarchal organization. It would be better to place all menu items in the menu's root `items` array. We can tell Navigation to do this for us by configuring a menu's type attribute to `flat`.
+
+When designating the additional menus, instead of passing in a string of with the menu's name, we create a menu config object and add it to the `menus` array in the config.
+
+```javascript
+var navigation = new Navigation({'menus': [
+  'header', 
+  {'menu-name': 'footer', 'type': 'flat'}
+  ]);
+```
+
 
 ###Configuring Page and Link Attributes
 
@@ -502,7 +515,7 @@ function sortByTitle (menuItem_a, menuItem_b, parent) {
 // sort the main menu
 navigation.menus.main.sort(sortByTitleOrSpecial);
 ``` 
-The `parent` parameter is useful when you want to use different sorting strategies for different menus. For example, you can use an Alpha-by-Title sort for your products page and sort blog posts using a timestamp value in the post's front matter. See the tests file [sort-spect.js] for examples.
+The `parent` parameter is useful when you want to use different sorting strategies for different menus. For example, you can use an Alpha-by-Title sort for your products page and sort blog posts using a timestamp value in the post's front matter. See the test file [sort-spect.js](https://github.com/criticalmash/assemble-navigation/blob/0.4.0/test/menu-spec.js) for examples.
 
  
 ## Release History
@@ -516,6 +529,8 @@ Beta release
 Feel free to submit issues or pull requests for [assemble-navigation](https://github.com/criticalmash/assemble-navigation/issues). Questions on use can also be submitted to the issue queue.
 
 There's a suite of unit tests. ```mocha test/*-spec.js```
+
+> Note: when running tests for the first time, Mocha might time out due to loading Assemble and it's dependencies. If this happens, try running the tests a second time.
 
 ## License
 © 2016 John O'Donnell (Critical Mash Inc.) Released under the [MIT license](https://github.com/criticalmash/assemble-navigation/blob/master/LICENSE-MIT).
