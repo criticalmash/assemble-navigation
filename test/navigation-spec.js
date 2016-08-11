@@ -266,6 +266,25 @@ describe('Navigation', function () {
      // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('http://google.com');
     });
+
+
+    it('should accept a custom link with just hash for url', function (){
+      var cmi = navi.customMenuItem({
+        title: 'Link Title',
+        url: '#contact'
+      });
+      // console.log('customMenuItem', cmi);
+      expect(navi.menus.main.items[0].url).to.equal('#contact');
+    });
+
+    it('should accept a custom link with just `#` for url', function (){
+      var cmi = navi.customMenuItem({
+        title: 'Link Title',
+        url: '#'
+      });
+      // console.log('customMenuItem', cmi);
+      expect(navi.menus.main.items[0].url).to.equal('#');
+    });
   });
 
   describe('clear menus',  function (){

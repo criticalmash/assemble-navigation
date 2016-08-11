@@ -1,13 +1,16 @@
-#Navigation generator plugin for Assemble
+# Navigation Generator Plugin for Assemble
 
+> New Note: The new 0.4 branch adds new capabilities and API enhancements. But we don't anticipate any breaking changes with the 0.3 branch API.
+> 
 > Note: This 0.3 branch is a public-beta designed to be used with Assemble v0.11+. Depending on feedback and testing, I might have to make breaking changes to the API.
+> 
 > Otherwise, feel free to use it and [share your thoughts](https://github.com/criticalmash/assemble-navigation/issues).
 
-##What is Assemble?
+## What is Assemble?
 [From the Assemble Repository →](https://github.com/assemble/assemble)
 > Get the rocks out of your socks! Assemble makes you fast at creating web projects. Assemble is used by thousands of projects for rapid prototyping, creating themes, scaffolds, boilerplates, e-books, UI components, API documentation, blogs, building websites / static site generator, alternative to jekyll for gh-pages and more! Assemble can also be used with gulp and grunt.
 
-Assemble-navigation is a middleware collection to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
+Assemble-Navigation is a middleware collection to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
 
 I've also created a collection of [navigation-helpers](https://github.com/criticalmash/navigation-helpers) to make building menus and breadcrumbs easier. But you can use any template helpers you like.
 
@@ -517,10 +520,11 @@ navigation.menus.main.sort(sortByTitleOrSpecial);
 ``` 
 The `parent` parameter is useful when you want to use different sorting strategies for different menus. For example, you can use an Alpha-by-Title sort for your products page and sort blog posts using a timestamp value in the post's front matter. See the test file [sort-spect.js](https://github.com/criticalmash/assemble-navigation/blob/0.4.0/test/menu-spec.js) for examples.
 
+By breaking out sorting as a separate function, you're free to create any sorting method you like. And because it's a function, you can save it into a different module or package for reuse in other projects or to share on npm. You can also include one sorting function inside another to compose a specific solution out of more general sorting functions.
  
 ## Release History
 ### v0.4.0
-Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation.
+Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation. Added `flat` menus.
 
 ### v0.3.0
 Beta release
