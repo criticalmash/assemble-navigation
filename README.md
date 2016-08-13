@@ -1,13 +1,16 @@
-#Navigation generator plugin for Assemble
+# Navigation Generator Plugin for Assemble
 
+> New Note: The new 0.4 branch adds new capabilities and API enhancements. But we don't anticipate any breaking changes with the 0.3 branch API.
+> 
 > Note: This 0.3 branch is a public-beta designed to be used with Assemble v0.11+. Depending on feedback and testing, I might have to make breaking changes to the API.
+> 
 > Otherwise, feel free to use it and [share your thoughts](https://github.com/criticalmash/assemble-navigation/issues).
 
-##What is Assemble?
+## What is Assemble?
 [From the Assemble Repository →](https://github.com/assemble/assemble)
 > Get the rocks out of your socks! Assemble makes you fast at creating web projects. Assemble is used by thousands of projects for rapid prototyping, creating themes, scaffolds, boilerplates, e-books, UI components, API documentation, blogs, building websites / static site generator, alternative to jekyll for gh-pages and more! Assemble can also be used with gulp and grunt.
 
-Assemble-navigation is a middleware collection to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
+Assemble-Navigation is a middleware collection to generate and inject hierarchal navigation data into a page's context. That page can then use a template or partial to build any kind of menu.
 
 I've also created a collection of [navigation-helpers](https://github.com/criticalmash/navigation-helpers) to make building menus and breadcrumbs easier. But you can use any template helpers you like.
 
@@ -21,7 +24,7 @@ The middleware parses the page views as Assemble loads files and creates a hiera
 
 The site builder can then create templates that use these objects to build menu's of their choosing.
 
-Assemble navigation uses sensible defaults that can be overridden in the `Assemblefile.js` file, front-matter, etc. By default, the Assebmle-Navigation creates one menu called `main` and place all pages into it. The site builder can override this default by adding a new menu called `footer`, and then update the front-matter of some pages to indicate that the page belongs in `footer` instead of `main`. Similar methods can be used to specify a custom sort order, use an alternative title in the menu, etc.
+Assemble-Navigation uses sensible defaults that can be overridden in the `Assemblefile.js` file, front-matter, etc. By default, the Assebmle-Navigation creates one menu called `main` and place all pages into it. The site builder can override this default by adding a new menu called `footer`, and then update the front-matter of some pages to indicate that the page belongs in `footer` instead of `main`. Similar methods can be used to specify a custom sort order, use an alternative title in the menu, etc.
 
 The data passed to each page's template is altered for each page to indicate the current page and it's parents.
 
@@ -37,7 +40,11 @@ npm i assemble-navigation --save
 
 Requires Assemble 0.11 or later.
 
-> Note: a set of template helpers are in development to make some tasks easier. A demo site with source code is also in the works. Keep an eye on this space for updates.
+You might also want to install the [navigation-helpers](https://github.com/criticalmash/navigation-helpers).
+
+```
+npm i navigation-helpers --save
+```
 
 ## How To Use
 
@@ -45,7 +52,7 @@ Requires Assemble 0.11 or later.
 
 >These instructions assume that you have a basic understanding of *Gulp style* [Assemble](https://github.com/assemble/assemble). Using this package will be vastly easier if you first understand how to build a basic Assemble site.
 
-Assemble-navigation is designed to work with almost-zero configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
+Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
 
 ```javascript
 var assemble = require('assemble');
@@ -53,8 +60,11 @@ var Navigation = require('assemble-navigation');
 
 var app = assemble();
 
+/* create an instance of navigation, you can pass in an 
+optional object hash with config parameters */
 var navigation = new Navigation();
 
+/* Attach middleware to onLoad and preRender events */
 app.pages.onLoad(/\.hbs$|\.md$/, navigation.onLoad());
 app.pages.preRender(/\.hbs$|\.md$/, navigation.preRender());
 
@@ -72,7 +82,7 @@ app.task('content', function () {
 });
 
 ```
-By default, the next time the Assemble loads view onto the `page` collection, the `onLoad` middleware will build your navigation object. When Assemble prepares to render the pages, the `preRender` middleware creates a copy of the navigation object adds it to the data attribute of each page it generates. Once in the view, you can use the data it supplies in any way you need. For example...
+By default, the next time the Assemble loads a view onto the `page` collection, the `onLoad` middleware will build your navigation object. When Assemble prepares to render the pages, the `preRender` middleware creates a copy of the navigation object and adds it to the data attribute of each page it generates. Once in the view, you can use the data it supplies in any way you need. For example...
 
 ```html
 <ul>
@@ -268,26 +278,29 @@ navigation.customMenuItem({
 	title: 'Sales Brochure',
 	url: '/downloads/pdf/salesbrochure.pdf',
 	menuPath: 'info/downloads',
-	linkId: 'sales-brochure-link
+	linkId: 'sales-brochure-link'
 });
 ```
 
 **Config Attributes:** 
 
 - `title` {string} The menu link text
-- `url` {string} link target
+- `url` {string} (required) link target. Can be a root-relative path, a full URL or a url hash (e.g. `#target`).
 - `menuPath` {string} Placement location in the menu hierarchy. Leave out if link belongs in top nav
 - `menu` {string} String or array indicating which menu(s) item appears in. Leave out to use default.
 - `data` {object} 
 
 You'll most likely would want to call `customMenuItem` config from within a task.
 
-###Specifying Additional or Alternative Menus
+### Specifying Additional or Alternative Menus
 
 Having just one menu on our page is boring. Fortunately, we can add more when creating an instance of the `Navigation` object. Assemble Navigation's configuration is changed by passing a config object when creating an instance of the `Navigation` object.
 
 ```javascript
-var navigation = new Navigation({'menus': ['header', 'footer'], 'default': 'header'});
+var navigation = new Navigation({
+  'menus': ['main', 'footer', 'features'], 
+  'default': 'main'
+});
 ```
 
 Above, we just added two menus to our navigation, *footer* and *features*. When overriding the defaults, if you want to keep the *main* menu, you must also add it to your config. Also, the config object has a *default* attribute set to `main`, so that pages are assigned to it unless specified.
@@ -333,7 +346,20 @@ Now, our customized navigation looks like this...
 }
 ```
 
-Now that we have two new menus (and an additional page), let's add some pages to the other menus and do something about that ridiculously long title.
+See *Configuring Page and Link Attributes* to find out how to add pages to the other menus and to provide alternative titles.
+
+#### Flat Menus
+Some extra menus, like the footer menu, usually contain only a few items and don't require a hierarchal organization. It would be better to place all menu items in the menu's root `items` array. We can tell Navigation to do this for us by configuring a menu's type attribute to `flat`.
+
+When designating the additional menus, instead of passing in a string of with the menu's name, we create a menu config object and add it to the `menus` array in the config.
+
+```javascript
+var navigation = new Navigation({'menus': [
+  'header', 
+  {'menu-name': 'footer', 'type': 'flat'}
+]);
+```
+
 
 ###Configuring Page and Link Attributes
 
@@ -466,13 +492,50 @@ This example implements Foundation to create the navigation, but using using ano
 > Note: this example doesn't include any means of sorting links. Future versions of Assemble-Navigation will include some means of specifying an order. Also the upcoming template helper package will contain some functionality to help sort menu items.
  
 ### Sorting And Ordering Menu items
-Currently, the only ordering Navigation does is to make sure that index pages are at the front/top of any items array. In your templates, you can use helpers to sort items before looping over them. See [Navigation-Helpers](https://github.com/criticalmash/navigation-helpers) and [Handlebars-Helpers](https://github.com/assemble/handlebars-helpers) for some useful template helpers.
+By default, the only ordering Navigation does is to make sure that index pages are at the front/top of any items array. The rest of the items appear in the order they arrive, which is usually alphabetical. There are two ways you can define the ordering of your menus...
 
-Any value exposed by a MenuItem can be used for sorting or filtering, an especially useful method is to add a sorting field to the frontmatter of pages that you want to sort.
+* In the templates you can sort menu items before rendering
+* In your AssembleFile using a sorting function
+
+Both of these methods use the attributes in your menu items.
+
+#### Sorting inside templates
+ In your templates, you can use helpers to sort items before looping over them. See [Navigation-Helpers](https://github.com/criticalmash/navigation-helpers) and [Handlebars-Helpers](https://github.com/assemble/handlebars-helpers) for some useful template helpers.
+
+Any value exposed by a MenuItem can be used for sorting or filtering, an especially useful method is to add a sorting field to the front matter of pages that you want to sort.
 
 The next version of Assemble-Navigation will have a means to order menu items inside the config object used when declaring a Navigation instance. See the [Issue Queue](https://github.com/criticalmash/assemble-navigation/issues) for this and other enhancements.
+
+#### Creating a sorting function
+A sorting function is passed to a menu after all views are loaded and before rendering. It's similar to using JavaScripts [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) function but with two significant differences:
+
+* The function is applied to the menu and any submenus recursively.
+* A reference to the parent item of the two siblings being compared is also passed into the function.
+
+Here's an example of a simple sort function that orders menu items by title. 
+
+```js
+// Your sorting function
+function sortByTitle (menuItem_a, menuItem_b, parent) {
+  if(menuItem_a.title > menuItem_b.title){
+    return 1;
+  }
+  if(menuItem_a.title < menuItem_b.title){
+    return -1;
+  }
+  return 0;
+}
+// sort the main menu
+navigation.menus.main.sort(sortByTitleOrSpecial);
+``` 
+The `parent` parameter is useful when you want to use different sorting strategies for different menus. For example, you can use an Alpha-by-Title sort for your products page and sort blog posts using a timestamp value in the post's front matter. See the test file [sort-spect.js](https://github.com/criticalmash/assemble-navigation/blob/0.4.0/test/menu-spec.js) for examples.
+
+By breaking out sorting as a separate function, you're free to create any sorting method you like. And because it's a function, you can save it into a different module or package for reuse in other projects or to share on npm. You can also include one sorting function inside another to compose a specific solution out of more general sorting functions.
  
 ## Release History
+### v0.4.0
+Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation. Added `flat` menus.
+
 ### v0.3.0
 Beta release
 
@@ -480,6 +543,8 @@ Beta release
 Feel free to submit issues or pull requests for [assemble-navigation](https://github.com/criticalmash/assemble-navigation/issues). Questions on use can also be submitted to the issue queue.
 
 There's a suite of unit tests. ```mocha test/*-spec.js```
+
+> Note: when running tests for the first time, Mocha might time out due to loading Assemble and it's dependencies. If this happens, try running the tests a second time.
 
 ## License
 © 2016 John O'Donnell (Critical Mash Inc.) Released under the [MIT license](https://github.com/criticalmash/assemble-navigation/blob/master/LICENSE-MIT).
