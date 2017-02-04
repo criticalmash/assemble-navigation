@@ -52,7 +52,7 @@ npm i navigation-helpers --save
 
 >These instructions assume that you have a basic understanding of *Gulp style* [Assemble](https://github.com/assemble/assemble). Using this package will be vastly easier if you first understand how to build a basic Assemble site.
 
-Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
+Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware for each of your renderable views.
 
 ```javascript
 var assemble = require('assemble');
@@ -64,7 +64,7 @@ var app = assemble();
 optional object hash with config parameters */
 var navigation = new Navigation();
 
-/* Attach middleware to onLoad and preRender events */
+/* Attach middleware to onLoad and preRender events for select views */
 app.pages.onLoad(/\.hbs$|\.md$/, navigation.onLoad());
 app.pages.preRender(/\.hbs$|\.md$/, navigation.preRender());
 
@@ -286,7 +286,7 @@ navigation.customMenuItem({
 
 - `title` {string} The menu link text
 - `url` {string} (required) link target. Can be a root-relative path, a full URL or a url hash (e.g. `#target`).
-- `menuPath` {string} (rquired) Placement location in the menu hierarchy.
+- `menuPath` {string} (rquired) Placement location in the menu hierarchy. Use `.` to place menu item in the primary nav.
 - `menu` {string} String or array indicating which menu(s) item appears in. Leave out to use default.
 - `data` {object} 
 
@@ -532,6 +532,23 @@ The `parent` parameter is useful when you want to use different sorting strategi
 
 By breaking out sorting as a separate function, you're free to create any sorting method you like. And because it's a function, you can save it into a different module or package for reuse in other projects or to share on npm. You can also include one sorting function inside another to compose a specific solution out of more general sorting functions.
  
+ 
+## Common Issues
+Assemble-Navigation is still in beta, so your first time using might be a bit rough.
+
+### Out of memory errors
+Assemble-Navigation adds about 10% to the average memory usage of an `assemblefile`. But improper configurations will cause a runaway process that eats up all your available ram. First, check to see if the middleware is attached to renderable views, like `app.pages`. Attaching the middleware directly to the `app` object will cause it to respond to all kinds of events it doesn't need to, causing a memory leak.
+
+### Menu items missing
+Your typical Assemble render task operates in an unbroken stream of reading files from source, rendering them and immediately writing out rendered pages to the destination directory. In this typical workflow, the first page of a site may be written to disk before the last source file is read.
+
+Assemble-Navigation needs to process every page in the site before it can render a complete menu. To make this possible, the task needs to rewritten to buffer views during the `onLoad` stage until all views have been parsed by Navigation. Once this is done, the stream is started again by calling `app.toStream('YOURVIEW')`, and piping the output to `app.renderfile()`.
+
+Failing to pause the stream will often cause pages to render with incomplete menus
+
+### Duplicate menu items
+When building your Assemble website interactively, the Navigation object may be persisted between runs of your load/render cycle. If so, menu item objects created in previous runs may still exist in your menus. Calling `navigation.clearMenus();` before reloading views will clear out those old menu items.
+
 ## Release History
 ### v0.4.0
 Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation. Added `flat` menus.
