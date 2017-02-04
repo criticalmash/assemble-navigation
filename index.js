@@ -130,6 +130,9 @@ Navigation.prototype.createMenuOption = function (menu) {
  * @return {[type]}        [description]
  */
 Navigation.prototype.customMenuItem = function (config) {
+  if (!config['menuPath'] && !config.data['menu-path']) {
+    throw new TypeError('Custom Menu Items require a `menuPath` or `data[\'menu-path\']` variable.');
+  }
   
   var menuItem = new MenuItem(config);
   
