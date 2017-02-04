@@ -20,4 +20,4 @@ tmp
 .jshintrc
 .editorconfig
 .gitignore
-
+.gitattributes
