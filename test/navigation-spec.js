@@ -285,6 +285,27 @@ describe('Navigation', function () {
       // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('#');
     });
+
+    it('should refuse to accept a custom link without a menuPath');
+
+    it('should preserve deeplinks and GET requests in hash objects', function (){
+      // var cmi = navi.customMenuItem({
+      //   title: 'Title',
+      //   url: 'http://example.com/mypage.html#deeplink'
+      // });
+      // // console.log('customMenuItem', cmi);
+      // expect(navi.menus.main.items[0].url).to.equal('http://example.com/mypage.html#deeplink');
+
+      var cmi2 = navi.customMenuItem({
+        title: 'Title',
+        url: 'http://example.com/#deeplink/andDeeper',
+        data: {'menu-path': 'outside'}
+      });
+      // console.log('customMenuItem', cmi);
+      // console.log('customMenuItem', navi.menus.main.items);
+      // console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      expect(navi.menus.main.items[0].url).to.equal('http://example.com/#deeplink/andDeeper');      
+    });
   });
 
   describe('clear menus',  function (){
