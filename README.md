@@ -286,7 +286,7 @@ navigation.customMenuItem({
 
 - `title` {string} The menu link text
 - `url` {string} (required) link target. Can be a root-relative path, a full URL or a url hash (e.g. `#target`).
-- `menuPath` {string} Placement location in the menu hierarchy. Leave out if link belongs in top nav
+- `menuPath` {string} (rquired) Placement location in the menu hierarchy.
 - `menu` {string} String or array indicating which menu(s) item appears in. Leave out to use default.
 - `data` {object} 
 

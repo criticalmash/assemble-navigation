@@ -10,9 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - This CHANGELOG.md file
 
 ### Changed
-- 
+- `customMenuItem()` documentation stated that the `menuPath` config variable was optional, it isn't.
 
 ### Fixed
+- `customMenuItem()` added check for a `menuPath` or `data['menu-path']` value in config object. Throws error if one is not present.
 
 ## [0.4.0] - 2016-08-03
 Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation. Added flat menus.

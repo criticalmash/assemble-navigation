@@ -114,14 +114,15 @@ Navigation.prototype.createMenuOption = function (menu) {
  * Creates a custom menu item from the config object passed to it. Used to create menutItems
  * for pages that are not Assemble views, like outside links and links to PDFs or other downloadables.
  * 
- * Object should at least have a url attribute and preferably a title. But it can use any attribute 
+ * Object should at least have a `url` attribute, a `menuPath` and preferably a `title`. But it can use any attribute 
  * any of the valid frontmatter values.
  *
  * ```js
  * nav.customMenuItem({
  *   title: 'Click Me',
  *   url: 'http://sample.com',
- *   menu: 'footer'
+ *   menu: 'footer',
+ *   menuPath: '.'
  * });
  * ```
  * Menu item is added to menu(s)
