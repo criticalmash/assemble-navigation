@@ -1,8 +1,8 @@
 # Navigation Generator Plugin for Assemble
 
-> New Note: The new 0.4 branch adds new capabilities and API enhancements. But we don't anticipate any breaking changes with the 0.3 branch API.
-> 
-> Note: This 0.3 branch is a public-beta designed to be used with Assemble v0.11+. Depending on feedback and testing, I might have to make breaking changes to the API.
+> New Note: Ver. 0.4.1 Introduces a CHANGELOG.md file (in site root). Please check it before upgrading Assemble-Navigation
+>
+> Note: This version of Assemble-Navigation is a public-beta designed to be used with Assemble v0.11+. Depending on feedback and testing, I might have to make breaking changes to the API.
 > 
 > Otherwise, feel free to use it and [share your thoughts](https://github.com/criticalmash/assemble-navigation/issues).
 
@@ -26,7 +26,7 @@ The site builder can then create templates that use these objects to build menu'
 
 Assemble-Navigation uses sensible defaults that can be overridden in the `Assemblefile.js` file, front-matter, etc. By default, the Assebmle-Navigation creates one menu called `main` and place all pages into it. The site builder can override this default by adding a new menu called `footer`, and then update the front-matter of some pages to indicate that the page belongs in `footer` instead of `main`. Similar methods can be used to specify a custom sort order, use an alternative title in the menu, etc.
 
-The data passed to each page's template is altered for each page to indicate the current page and it's parents.
+The data passed to each page's template is altered for each page to indicate the current page and it's parents. You can use this in your templates to add css classes to highlight these menu items.
 
 [More details](https://github.com/assemble/assemble/issues/462)
 
@@ -52,7 +52,7 @@ npm i navigation-helpers --save
 
 >These instructions assume that you have a basic understanding of *Gulp style* [Assemble](https://github.com/assemble/assemble). Using this package will be vastly easier if you first understand how to build a basic Assemble site.
 
-Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware.
+Assemble-navigation is designed to use common-sense defaults to ease configuration. It infers the navigation hierarchy from the directory structure of the site. What you have to do is configure Assemble to use the middleware. That's done requiring Assemble-Navigation and setting it up as a middleware for each of your renderable views.
 
 ```javascript
 var assemble = require('assemble');
@@ -64,24 +64,37 @@ var app = assemble();
 optional object hash with config parameters */
 var navigation = new Navigation();
 
-/* Attach middleware to onLoad and preRender events */
+/* Attach middleware to onLoad and preRender events for select views */
 app.pages.onLoad(/\.hbs$|\.md$/, navigation.onLoad());
 app.pages.preRender(/\.hbs$|\.md$/, navigation.preRender());
+```
 
+Once your middleware is configured, you then update the Assemble task(s) responsible for your load/render cycle. Usually, templating tasks use Assemble's streaming workflow to read and immediately render views. You can think of it as a factory production line that takes in a raw view file on one end and builds each individual page by preforming an operation at a series of stations along that line. One station might process the frontmatter. The next could apply the templates. A later station would write the file out to the destination directory. And the last station typically notifies the browser to reload.
+
+Under this configuration, some pages might already be rendered out before the last page can be processed by Assemble-Navigation. We need to pause the production line between the `onLoad` and `onRender` steps and allow all the views to be processed by Navigation's `onLoad` middleware before restating the stream. During this time, the processed views sit in a buffer and wait until the last one is processed. Our task then restarts the stream.
+
+This complicated sounding process is actually quite simple to implement thanks to Assemble's versatile API.
+
+```js
 /* a sample task */
 app.task('content', function () {
   /* clear out any old data (important during development) */
   navigation.clearMenus();
   /* `src/content` would be designated as the cwd */
+  /* Normally, app.pages would immediately pipe right into app.renderFile */
   app.pages('src/content/**/*.{md,hbs}');
+  /* app.toStream isn't called until app.pages finishes loading */
   return app.toStream('pages')
-    .pipe(app.renderFile())
+    .pipe(app.renderFile()) 
     .on('err', console.error)
     .pipe(extname())
     .pipe(app.dest('build'));
 });
 
 ```
+
+> Also notice the call to `navigation.clearMenus();`. When building the site interactively, this function clears out old data in the menus, giving you a clean slate on each load/render cycle.
+
 By default, the next time the Assemble loads a view onto the `page` collection, the `onLoad` middleware will build your navigation object. When Assemble prepares to render the pages, the `preRender` middleware creates a copy of the navigation object and adds it to the data attribute of each page it generates. Once in the view, you can use the data it supplies in any way you need. For example...
 
 ```html
@@ -286,7 +299,7 @@ navigation.customMenuItem({
 
 - `title` {string} The menu link text
 - `url` {string} (required) link target. Can be a root-relative path, a full URL or a url hash (e.g. `#target`).
-- `menuPath` {string} Placement location in the menu hierarchy. Leave out if link belongs in top nav
+- `menuPath` {string} (rquired) Placement location in the menu hierarchy. Use `.` to place menu item in the primary nav.
 - `menu` {string} String or array indicating which menu(s) item appears in. Leave out to use default.
 - `data` {object} 
 
@@ -532,6 +545,23 @@ The `parent` parameter is useful when you want to use different sorting strategi
 
 By breaking out sorting as a separate function, you're free to create any sorting method you like. And because it's a function, you can save it into a different module or package for reuse in other projects or to share on npm. You can also include one sorting function inside another to compose a specific solution out of more general sorting functions.
  
+ 
+## Common Issues
+Assemble-Navigation is still in beta, so your first time using it might be a bit rough. Below are some common issues you might run into. If you're stumped, feel free to ask a question in the [Issue Queue](https://github.com/criticalmash/assemble-navigation/issues). Some common problems and their solutions are listed below.
+
+### Out of memory errors
+Assemble-Navigation adds about 10% to the average memory usage of an `assemblefile`. But improper configurations will cause a runaway process and memory leaks. First, check to see if the middleware is attached to renderable views, like `app.pages`. Attaching the middleware directly to the `app` object will cause it to respond to all kinds of events it doesn't need to, causing a memory leak.
+
+### Menu items missing
+Your typical Assemble render task operates in an unbroken stream of reading files from source, rendering them and immediately writing out rendered pages to the destination directory. In this typical workflow, the first page of a site may be written to disk before the last source file is read.
+
+Assemble-Navigation needs to process every page in the site before it can render a complete menu. To make this possible, the task needs to rewritten to buffer views during the `onLoad` stage until all views have been parsed by Navigation. Once this is done, the stream is started again by calling `app.toStream('YOURVIEW')`, and piping the output to `app.renderFile()`.
+
+Failing to pause the stream will often cause pages to render with incomplete menus. Make sure all views are loaded before calling `app.renderFile()`.
+
+### Duplicate menu items
+When building your Assemble website interactively, the Navigation object may be persisted between runs of your load/render cycle. If so, menu item objects created in previous runs may still exist in your menus. Calling `navigation.clearMenus();` before reloading views will clear out those old menu items.
+
 ## Release History
 ### v0.4.0
 Added sorting mechanism. Removed Vinyl as a peer dependency for MenuItem creation. Added `flat` menus.

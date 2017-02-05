@@ -10,16 +10,14 @@ lib-cov
 pids
 logs
 results
+docs
+test
 
 npm-debug.log
-node_modules
 tmp
 *.sublime-*
 
-Gruntfile.js
-test
-bower.json
 .jshintrc
 .editorconfig
 .gitignore
-
+.gitattributes

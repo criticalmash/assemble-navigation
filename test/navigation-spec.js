@@ -261,7 +261,8 @@ describe('Navigation', function () {
     it('should accept a custom link to another domain', function () {
       var cmi = navi.customMenuItem({
         title: 'Link Title',
-        url: 'http://google.com'
+        url: 'http://google.com',
+        menuPath: '.'
       });
      // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('http://google.com');
@@ -271,7 +272,8 @@ describe('Navigation', function () {
     it('should accept a custom link with just hash for url', function (){
       var cmi = navi.customMenuItem({
         title: 'Link Title',
-        url: '#contact'
+        url: '#contact',
+        menuPath: '.'
       });
       // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('#contact');
@@ -280,10 +282,41 @@ describe('Navigation', function () {
     it('should accept a custom link with just `#` for url', function (){
       var cmi = navi.customMenuItem({
         title: 'Link Title',
-        url: '#'
+        url: '#',
+        menuPath: '.'
       });
       // console.log('customMenuItem', cmi);
       expect(navi.menus.main.items[0].url).to.equal('#');
+    });
+
+    it('should refuse to accept a custom link without a menuPath', function (){
+      var badMI = {
+        title: 'Title',
+        url: 'http://example.com/#deeplink/andDeeper',
+      };
+      expect(function(){
+        navi.customMenuItem(badMI);
+      }).to.throw(Error);
+    });
+
+    it('should preserve deeplinks and GET requests in hash objects', function (){
+      // var cmi = navi.customMenuItem({
+      //   title: 'Title',
+      //   url: 'http://example.com/mypage.html#deeplink'
+      // });
+      // // console.log('customMenuItem', cmi);
+      // expect(navi.menus.main.items[0].url).to.equal('http://example.com/mypage.html#deeplink');
+
+      var cmi2 = navi.customMenuItem({
+        title: 'Title',
+        url: 'http://example.com/#deeplink/andDeeper',
+        //data: {'menu-path': 'outside'}
+        menuPath: 'outside'
+      });
+      // console.log('customMenuItem', cmi);
+      // console.log('customMenuItem', navi.menus.main.items);
+      // console.log(JSON.stringify(navi.menus.main.items, null, '\t'));
+      expect(navi.menus.main.items[0].items[0].url).to.equal('http://example.com/#deeplink/andDeeper');      
     });
   });
 
@@ -302,7 +335,8 @@ describe('Navigation', function () {
     it('should clear out menu items when told to', function () {
       var cmi = navi.customMenuItem({
         title: 'Link Title',
-        url: 'http://google.com'
+        url: 'http://google.com',
+        menuPath: '.'
       });
       expect(navi.menus.main.items.length).to.equal(1);
       navi.clearMenus();

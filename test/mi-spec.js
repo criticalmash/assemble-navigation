@@ -83,6 +83,24 @@ describe('MenuItem', function () {
     expect(out.linkId).to.eql('media-news-latest-news');
   });
 
+  it('should include deeplinks and GET requests in hash objects', function () {
+    var link = {
+      title: 'Title',
+      url: 'http://example.com/mypage.html#deeplink'
+    };
+    var mi = new MenuItem(link);
+    // console.log('deeplink', mi);
+    expect(mi.url).to.equal('http://example.com/mypage.html#deeplink');
+
+    var link = {
+      title: 'Title',
+      url: 'http://example.com/#deeplink/andDeeper'
+    };
+    var mi = new MenuItem(link);
+    // console.log('deeplink', mi);
+    expect(mi.url).to.equal('http://example.com/#deeplink/andDeeper');
+  });
+
   describe('Relative path', function () {
     var menuItem;
     beforeEach(function () {

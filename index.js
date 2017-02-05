@@ -71,7 +71,6 @@ Navigation.prototype.menuExists = function (menu) {
  * @return {array}      [array of strings]
  */
 Navigation.prototype.getAssignedMenus = function (view) {
-  var self = this;
   var pageData = view.data;
   var menus = _(pageData).has('menu') ? pageData.menu:this.default;
 
@@ -81,14 +80,14 @@ Navigation.prototype.getAssignedMenus = function (view) {
   }
 
   // normalize menu options
-  menus = _.map(menus, function (menu) {
-    return self.createMenuOption(menu);
-  });
+  menus = menus.map(function (menu) {
+     return this.createMenuOption(menu)
+  }, this);
 
   // filter out non-existing menus
-  menus = _.filter(menus, function (m) {
-    return self.menuExists(m['menu-name']);
-  });
+  menus = menus.filter(function (m) {
+    return this.menuExists(m['menu-name']);
+  }, this);
 
   return menus;
 };
@@ -115,14 +114,15 @@ Navigation.prototype.createMenuOption = function (menu) {
  * Creates a custom menu item from the config object passed to it. Used to create menutItems
  * for pages that are not Assemble views, like outside links and links to PDFs or other downloadables.
  * 
- * Object should at least have a url attribute and preferably a title. But it can use any attribute 
+ * Object should at least have a `url` attribute, a `menuPath` and preferably a `title`. But it can use any attribute 
  * any of the valid frontmatter values.
  *
  * ```js
  * nav.customMenuItem({
  *   title: 'Click Me',
  *   url: 'http://sample.com',
- *   menu: 'footer'
+ *   menu: 'footer',
+ *   menuPath: '.'
  * });
  * ```
  * Menu item is added to menu(s)
@@ -131,15 +131,18 @@ Navigation.prototype.createMenuOption = function (menu) {
  * @return {[type]}        [description]
  */
 Navigation.prototype.customMenuItem = function (config) {
+  if (!config['menuPath'] && !config.data['menu-path']) {
+    throw new TypeError('Custom Menu Items require a `menuPath` or `data[\'menu-path\']` variable.');
+  }
   
   var menuItem = new MenuItem(config);
   
   var menus = this.getAssignedMenus(menuItem);
-  var self = this;
-  _(menus).forEach(function (menu) {
+
+  menus.forEach(function (menu) {
     var name = menu['menu-name'];
-    self.menus[name].addItem(menuItem);
-  });
+    this.menus[name].addItem(menuItem);
+  }, this);
 
   return menuItem;
 }
@@ -151,13 +154,12 @@ Navigation.prototype.customMenuItem = function (config) {
  */
 Navigation.prototype.parseView = function (view) {
   var menus = this.getAssignedMenus(view);
-  var self = this;
-  //console.log('parseView menus', menus);
-  _(menus).forEach(function (options) {
+
+  menus.forEach(function (options) {
     var name = options['menu-name'];
     var menuItem = new MenuItem(view, options);
-    self.menus[name].addItem(menuItem);
-  });
+      this.menus[name].addItem(menuItem);
+    }, this);
 };
 
 /**
@@ -172,8 +174,8 @@ Navigation.prototype.inject = function (view) {
   // set isCurrentPage to true
   // add revised menuItem to relevant menus in navLocal
   var menus = this.getAssignedMenus(view);
-  var self = this;
-  _(menus).forEach(function (menu) {
+
+  menus.forEach(function (menu) {
     var name = menu['menu-name'];
     var menuItem = new MenuItem(view);
     menuItem.isCurrentPage = true
@@ -191,8 +193,7 @@ Navigation.prototype.getLocalMenu = function (view) {
   // set isCurrentPage to true
   // add revised menuItem to relevant menus in navLocal
   var menus = this.getAssignedMenus(view);
-  var self = this;
-  _(menus).forEach(function (menu) {
+  menus.forEach(function (menu) {
     var name = menu['menu-name'];
     var menuItem = new MenuItem(view);
     menuItem.isCurrentPage = true
